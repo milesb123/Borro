@@ -1,0 +1,6 @@
+framework module Pods_Borro_BorroUITests {
+  umbrella header "Pods-Borro-BorroUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>597800614016-sl48lb5ubrme2q8e99s82qiq81ahik78.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.597800614016-sl48lb5ubrme2q8e99s82qiq81ahik78</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCSOhlnActZHJiPsoS1bc_hyNgzMvdsJE8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>597800614016</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>milesBroomfield.com.Borro</string>
+	<key>PROJECT_ID</key>
+	<string>borro-973e8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>borro-973e8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:597800614016:ios:2a73b29d85d2619a768e65</string>
+	<key>DATABASE_URL</key>
+	<string>https://borro-973e8.firebaseio.com</string>
+</dict>
+</plist>

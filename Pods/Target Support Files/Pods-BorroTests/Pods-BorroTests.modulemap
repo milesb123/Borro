@@ -1,0 +1,6 @@
+framework module Pods_BorroTests {
+  umbrella header "Pods-BorroTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
