@@ -16,51 +16,61 @@ struct MotherView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            VStack(spacing:0){
-                if(self.localUser != nil){
-                    VStack(spacing:0){
-                        //Content
-                        VStack{
-                            if(self.viewRouter.currentTab == 0){
-                                NavigationView{
-                                    SearchView()
-                                        .navigationBarTitle("")
-                                        .navigationBarHidden(true)
+            ZStack{
+                VStack(spacing:0){
+                    if(self.localUser != nil){
+                        VStack(spacing:0){
+                            //Content
+                            VStack{
+                                if(self.viewRouter.currentTab == 0){
+                                    NavigationView{
+                                        SearchView()
+                                            .navigationBarTitle("")
+                                            .navigationBarHidden(true)
+                                    }
                                 }
-                            }
-                            else if(self.viewRouter.currentTab == 1){
-                                RootProfileView(userID: self.localUser!.userID)
-                            }
-                            Spacer()
-                    }
-                    //Spacer()
-                    VStack(spacing:0){
-                        HStack(spacing:10){
-                            Spacer()
-                            self.viewTab(thisView: 0)
-                            Spacer()
-                            self.viewTab(thisView: 1)
-                            Spacer()
-                                
+                                else if(self.viewRouter.currentTab == 1){
+                                    RootProfileView(userID: self.localUser!.userID)
+                                }
                         }
-                        .padding(.vertical)
-                        .padding(.bottom)
+                        //Spacer()
+                        VStack(spacing:0){
+                            HStack(spacing:10){
+                                Spacer()
+                                self.viewTab(thisView: 0)
+                                Spacer()
+                                self.viewTab(thisView: 1)
+                                Spacer()
+                                    
+                            }
+                            .padding(.vertical)
+                            .padding(.bottom)
+                        }
+                        .frame(width: geometry.size.width,height:geometry.size.height/10)
+                        .foregroundColor(Color.white)
+                        .background(Color.white.shadow(radius: 2))
                     }
-                    .frame(width: geometry.size.width,height:geometry.size.height/10)
-                    .foregroundColor(Color.white)
-                    .background(Color.white.shadow(radius: 2))
+                    .edgesIgnoringSafeArea(.bottom)
+                    }
+                    else{
+                        LoginView()
+                    }
                 }
-                .edgesIgnoringSafeArea(.bottom)
+                .onAppear{
+                    self.localUser = Session.shared.localUser
                 }
-                else{
-                    LoginView()
+                .onReceive(Session.shared.$localUser) { (user) in
+                    self.localUser = user
                 }
-            }
-            .onAppear{
-                self.localUser = Session.shared.localUser
-            }
-            .onReceive(Session.shared.$localUser) { (user) in
-                self.localUser = user
+                
+                Modal()
+                
+                if(self.viewRouter.alertShown){
+                    self.viewRouter.alert
+                    onAppear{
+                        print("Alert appeared")
+                    }
+                }
             }
         }
     }
@@ -114,7 +124,7 @@ struct MotherView: View {
         /*
         self.viewRouter.setNewTab(view: 2)
         */
-        Session.shared.signOut()
+        Session.shared.userServices.signOut()
     }
 }
 

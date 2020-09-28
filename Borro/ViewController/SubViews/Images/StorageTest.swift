@@ -19,7 +19,7 @@ class StorageTest{
     @Published var img:UIImage?
     
     func imageTest1(completionHandler: @escaping(Error?) -> Void){
-        storage.getData(maxSize: 1 * 1024 * 1024) { (data, err) in
+        storage.getData(maxSize: 1 * 2048 * 2048) { (data, err) in
             if let err  = err{
                 completionHandler(err)
             }

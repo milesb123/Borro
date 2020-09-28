@@ -38,7 +38,7 @@ class ImageLoader{
     
     func loadFromFirebase(fullPath:String,completionHandler: @escaping(Error?) -> Void){
         
-        Storage.storage().reference(withPath: fullPath).getData(maxSize: 1 * 1024 * 1024) { (data, err) in
+        Storage.storage().reference(withPath: fullPath).getData(maxSize: 1 * 2048 * 2048) { (data, err) in
             if let err  = err{
                 completionHandler(err)
             }

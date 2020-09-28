@@ -10,14 +10,20 @@ import SwiftUI
 
 class NavigationStack:ObservableObject{
     
-    let baseView:NavigationItem
+    var baseView:NavigationItem
     
     @Published var viewStack:[NavigationItem] = []
     @Published var currentView:NavigationItem
+    @Published var lastCommand:Int? = nil
     
-    init(baseView:NavigationItem){
-        self.baseView = baseView
-        self.currentView = baseView
+    init(){
+        self.baseView = NavigationItem(view: AnyView(EmptyView()))
+        self.currentView = self.baseView
+    }
+    
+    func setBaseView(view:NavigationItem){
+        self.baseView = view
+        self.currentView = self.baseView
     }
     
     func unwind(){
@@ -25,38 +31,20 @@ class NavigationStack:ObservableObject{
             let last = viewStack.count - 1
             currentView = viewStack[last]
             viewStack.remove(at: last)
+            self.lastCommand = -1
         }
     }
     
     func advance(destination:NavigationItem){
         viewStack.append(currentView)
         currentView = destination
+        self.lastCommand = 1
     }
     
     func home(){
         currentView = baseView
         viewStack.removeAll()
-    }
-    
-}
-
-struct NavigationHost:View{
-    
-    let baseView:AnyView
-    
-    var body: some View{
-        NavigationStage()
-                .environmentObject(NavigationStack(baseView: NavigationItem(view: baseView)))
-    }
-    
-    private struct NavigationStage: View {
-        
-        @EnvironmentObject var navigation:NavigationStack
-        
-        var body: some View {
-            navigation.currentView
-        }
-        
+        self.lastCommand = nil
     }
     
 }
@@ -64,60 +52,93 @@ struct NavigationHost:View{
 struct NavigationItem:View{
     
     var view:AnyView
-    
+
     var body: some View{
-        VStack{
-            view
+        GeometryReader{ geometry in
+            ZStack{
+                Color.white
+                    .frame(width:geometry.size.width,height:geometry.size.height)
+                view
+            }
         }
     }
 }
 
-struct NavigationBackButton:View{
+struct NavigationHost:View{
     
-    @EnvironmentObject var navigation:NavigationStack
+    @ObservedObject var navigation:NavigationStack
+    @State var testOffset:CGFloat = UIScreen.main.bounds.width
+    @State var advanceOffset:CGFloat = UIScreen.main.bounds.width
+    @State var unwindOffset:CGFloat = 0
     
     var body: some View{
-        Button(action:{self.navigation.unwind()}){
-            Circle()
-                .foregroundColor(Color("Teal"))
-                .overlay(Image(systemName: "arrow.left.circle.fill").resizable().foregroundColor(Color.white))
-                .frame(width:40,height:40)
-                .shadow(radius: 5)
+        GeometryReader{ geometry in
+            ZStack{
+                if(self.navigation.viewStack.count > 0){
+                    self.navigation.viewStack[self.navigation.viewStack.count-1]
+                    self.navigation.currentView
+                }
+                else{
+                    self.navigation.currentView
+                }
+            }
         }
     }
+    
 }
 
 struct HomeView:View{
     
     let text:String
-    @EnvironmentObject var navigation:NavigationStack
+    let navigation = NavigationStack()
     
     var body: some View{
-        Text(text)
-            .background(Color.white)
+        NavigationHost(navigation: navigation)
+            .onAppear{
+                self.navigation.setBaseView(view: NavigationItem(view: AnyView(view())))
+            }
+    }
+    
+    func view() -> some View{
+        return
+            Text(text)
+                .background(Color.blue)
+                .onTapGesture {
+                    self.navigation.advance(destination: NavigationItem(view: AnyView(Second(navigation: self.navigation))))
+                }
+    }
+}
+
+struct Second:View{
+    
+    @ObservedObject var navigation:NavigationStack
+    
+    var body: some View{
+        Text("Click to go to third")
+            .background(Color.blue)
             .onTapGesture {
-                self.navigation.advance(destination: NavigationItem(view: AnyView(NextView())))
+                self.navigation.advance(destination: NavigationItem(view: AnyView(Third(navigation: self.navigation))))
             }
     }
 }
 
-struct NextView:View{
+struct Third:View{
     
-    @EnvironmentObject var navigation:NavigationStack
+    @ObservedObject var navigation:NavigationStack
     
     var body: some View{
-        Text("Click to return")
-            .background(Color.white)
+        Text("Click to return home")
+            .background(Color.yellow)
             .onTapGesture {
-                self.navigation.unwind()
+                self.navigation.home()
             }
     }
 }
 
 struct NavigationView_Previews: PreviewProvider {
     static var previews: some View {
-        VStack{
-            NavigationHost(baseView: AnyView(HomeView(text: "Home 1")))
+        Group {
+            HomeView(text: "Tap to move to next view")
         }
     }
 }

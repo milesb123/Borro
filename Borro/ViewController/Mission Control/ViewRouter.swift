@@ -11,6 +11,15 @@ import SwiftUI
 
 class ViewRouter:ObservableObject{
     
+    @Published var alertShown = false
+    @Published var alert:NativeAlert?
+    
+    @Published var popUpShown = false
+    @Published var popUp = Text("")
+    
+    @Published var modalIsShown = false
+    @Published var modalContent:AnyView?
+    
     @Published var currentTab = 0
     
     var lastTab = 0
@@ -19,5 +28,18 @@ class ViewRouter:ObservableObject{
         self.lastTab = self.currentTab
 
         self.currentTab = view
+    }
+    
+    func presentAlert(alert:NativeAlert){
+        self.alert = alert
+        self.alertShown = true
+    }
+    
+    func presentModal(modalContent:AnyView){
+        self.modalContent = modalContent
+        self.modalIsShown = true
+    }
+    func dismissModal(){
+        self.modalIsShown = false
     }
 }

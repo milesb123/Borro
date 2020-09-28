@@ -10,7 +10,7 @@ import SwiftUI
 
 struct StorageImage: View{
     
-    private var imageLoader = ImageLoader()
+    var imageLoader = ImageLoader()
     
     var placeholder:Image
     
@@ -20,11 +20,13 @@ struct StorageImage: View{
     
     @State var image:Image?
     
+    let contentMode:ContentMode
+    
     var body: some View {
         Group{
             self.image?
                 .resizable()
-                .aspectRatio(contentMode: .fill)
+                .aspectRatio(contentMode: self.contentMode)
                 .frame(width: width, height: height)
                 .clipped()
                 .cornerRadius(cornerRadius)
@@ -39,7 +41,7 @@ struct StorageImage: View{
             }
     }
     
-    init(fullPath:String, placeholder:Image = Image(systemName: "photo"), cornerRadius:CGFloat = 0, width:CGFloat? = nil, height:CGFloat? = nil){
+    init(fullPath:String, placeholder:Image = Image(systemName: "photo"), cornerRadius:CGFloat = 0, width:CGFloat? = nil, height:CGFloat? = nil, contentMode:ContentMode = .fill){
         self.placeholder = placeholder
         self.imageLoader.loadFromFirebase(fullPath: fullPath) { (err) in
             if let err = err{
@@ -49,7 +51,7 @@ struct StorageImage: View{
         self.cornerRadius = cornerRadius
         self.width = width
         self.height = height
-        
+        self.contentMode = contentMode
     }
     
 }

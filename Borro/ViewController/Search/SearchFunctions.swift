@@ -16,13 +16,7 @@ class SearchFunctions{
         
         for item in items{
             if(item.title.lowercased().contains(search.text.lowercased())){
-                print("True")
-                print(item.title + "VS" + search.text)
                 returnedItems.append(item)
-            }
-            else{
-                print(item.title + "VS" + search.text)
-                print("false")
             }
         }
         

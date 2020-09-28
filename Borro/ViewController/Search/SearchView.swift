@@ -75,10 +75,9 @@ struct SearchView: View {
                         ScrollView{
                             ForEach(results, id: \.itemID){result in
                                 NavigationLink(destination:
-                                    ResultDetail(item: result, isLocalUserItem: Session.shared.userIsLocal(userID: result.sellerID))
+                                                ResultDetail(item: result, isLocalUserItem: Session.shared.userServices.userIsLocal(userID: result.sellerID))
                                 ){
-                                    self.searchResultView(item: result)
-                                    .buttonStyle(PlainButtonStyle())
+                                    SearchResultView(searchResultView: self, item: result)
                                 }
                                 .buttonStyle(PlainButtonStyle())
                             }
@@ -110,12 +109,12 @@ struct SearchView: View {
     }
     
     private func didCommitSearch(text:String="",filters:[Filter]=[]){
-        Session.shared.getAllItems { (optionalItems) in
+        Session.shared.itemServices.getAllItems { optionalItems,err in
+            if let err = err{
+                print(err)
+            }
             if let rawItems = optionalItems{
                 self.results = SearchFunctions.filterBySearch(search: Search(text: text, filters: filters), items: rawItems)
-            }
-            else{
-                print("There was an error loading items")
             }
         }
     }
@@ -128,12 +127,12 @@ struct SearchView: View {
         VStack{
             VStack(spacing:10){
                 if(!item.images.isEmpty){
-                StorageImage(fullPath:item.images[0], placeholder: Image(systemName: "rectangle.fill"), cornerRadius: 0, height: UIScreen.main.bounds.height*0.25)
+                    StorageImage(fullPath: item.images[0], cornerRadius: 0, height: UIScreen.main.bounds.height*0.25)
                 }
                 else{
                     Rectangle()
                         .foregroundColor(Color("lightGray"))
-                        .frame(height: UIScreen.main.bounds.height*0.25)
+                        .frame(height:UIScreen.main.bounds.height*0.25)
                 }
                 HStack{
                     VStack(alignment: .leading,spacing: 5){
@@ -198,6 +197,72 @@ struct SearchView: View {
                 }
                 Spacer()
             }
+        }
+    }
+    
+}
+
+struct SearchResultView:View{
+    
+    let searchResultView:SearchView
+    
+    let item:Item
+    
+    @State var distance:Float = 0
+    
+    var body: some View{
+        VStack{
+            VStack(spacing:10){
+                if(!item.images.isEmpty){
+                    StorageImage(fullPath: item.images[0], cornerRadius: 0, height: UIScreen.main.bounds.height*0.25)
+                }
+                else{
+                    Rectangle()
+                        .foregroundColor(Color("lightGray"))
+                        .frame(height:UIScreen.main.bounds.height*0.25)
+                }
+                HStack{
+                    VStack(alignment: .leading,spacing: 5){
+                        Text(item.title)
+                            .font(.headline)
+                            .fontWeight(.bold)
+                        HStack{
+                            Text("From £\(String(format:"%.2f",item.dailyPrice)) Per Day | ")
+                                .font(.subheadline)
+                                .fontWeight(.light)
+                            Group{
+                                Image(systemName:"star.fill")
+                                    .resizable()
+                                    .foregroundColor(Color("Teal"))
+                                    .frame(width:15,height:15)
+                                Text("4.4 (500+ Reviews)")
+                                .foregroundColor(Color("Teal"))
+                                .font(.subheadline)
+                                .fontWeight(.light)
+                            }
+                        }
+                        HStack{
+                            Image(systemName:"mappin.and.ellipse")
+                                .resizable()
+                                .foregroundColor(Color("Teal"))
+                                .frame(width:15,height:15)
+                            Text("\(distance.description) Km Away")
+                                //.foregroundColor(Color("Gray"))
+                                .font(.subheadline)
+                                .fontWeight(.light)
+                        }
+                    }
+                    .foregroundColor(Color.black)
+                    .font(.body)
+                    .fixedSize(horizontal: false, vertical: true)
+                    
+                    Spacer()
+                }
+                Spacer()
+            }
+        }
+        .onAppear{
+            Session.shared.distanceFromItem(itemID: self.item.itemID, distance: &self.distance)
         }
     }
     

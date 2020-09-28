@@ -54,7 +54,7 @@ struct Settings: View {
     }
     
     func signOutButtonTapped(){
-        Session.shared.signOut()
+        Session.shared.userServices.signOut()
     }
     
     func backButtonTapped(){

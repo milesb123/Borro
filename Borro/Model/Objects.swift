@@ -8,17 +8,20 @@
 
 import Foundation
 import SwiftUI
+import Firebase
+import FirebaseStorage
 
 struct User{
     let userID:String
     let fullName:String
     let email:String
     let mobile:String
-    let image:UIImage?
+    let image:String
     let sellerBio:String
 }
 
-struct Item{
+class Item:ObservableObject{
+    
     let itemID:String
     let sellerID:String
     let title:String
@@ -28,7 +31,21 @@ struct Item{
     let description:String
     let quantity:Int
     let pickUpLocation:String
-    let images:[String] = []
+    let images:[String]
+    
+    init(itemID:String,sellerID:String,title:String,category:String,condition:String,dailyPrice:Double,description:String,quantity:Int,pickUpLocation:String,images:[String]){
+        self.itemID = itemID
+        self.sellerID = sellerID
+        self.title = title
+        self.category = category
+        self.condition = condition
+        self.dailyPrice = dailyPrice
+        self.description = description
+        self.quantity = quantity
+        self.pickUpLocation = pickUpLocation
+        self.images = images
+    }
+    
 }
 
 struct Borrow{
