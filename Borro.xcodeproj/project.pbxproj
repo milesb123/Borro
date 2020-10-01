@@ -19,6 +19,8 @@
 		3D4D18112518070600C249E7 /* ItemFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4D18102518070600C249E7 /* ItemFunctions.swift */; };
 		3D4D181B251807C900C249E7 /* EditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4D181A251807C900C249E7 /* EditProfile.swift */; };
 		3D4D18242518090000C249E7 /* CreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4D18232518090000C249E7 /* CreateUser.swift */; };
+		3D60BBCD2525EF55003744B3 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D60BBCC2525EF55003744B3 /* TestView.swift */; };
+		3D60BBD22525FF9F003744B3 /* SearchHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D60BBD12525FF9F003744B3 /* SearchHomeView.swift */; };
 		3D64C45D24DDAA6F008D37FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C45C24DDAA6F008D37FE /* AppDelegate.swift */; };
 		3D64C45F24DDAA6F008D37FE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C45E24DDAA6F008D37FE /* SceneDelegate.swift */; };
 		3D64C46324DDAA71008D37FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D64C46224DDAA71008D37FE /* Assets.xcassets */; };
@@ -26,7 +28,7 @@
 		3D64C46924DDAA71008D37FE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D64C46724DDAA71008D37FE /* LaunchScreen.storyboard */; };
 		3D64C47424DDAA71008D37FE /* BorroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C47324DDAA71008D37FE /* BorroTests.swift */; };
 		3D64C47F24DDAA71008D37FE /* BorroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C47E24DDAA71008D37FE /* BorroUITests.swift */; };
-		3D64C48F24DDAF64008D37FE /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C48E24DDAF64008D37FE /* SearchView.swift */; };
+		3D64C48F24DDAF64008D37FE /* SearchedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C48E24DDAF64008D37FE /* SearchedView.swift */; };
 		3D64C49524DDBA0A008D37FE /* ResultDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C49424DDBA0A008D37FE /* ResultDetail.swift */; };
 		3D64C49724DE9DB7008D37FE /* MotherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C49624DE9DB7008D37FE /* MotherView.swift */; };
 		3D64C49924DEA675008D37FE /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C49824DEA675008D37FE /* ViewRouter.swift */; };
@@ -80,6 +82,8 @@
 		3D4D18102518070600C249E7 /* ItemFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFunctions.swift; sourceTree = "<group>"; };
 		3D4D181A251807C900C249E7 /* EditProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfile.swift; sourceTree = "<group>"; };
 		3D4D18232518090000C249E7 /* CreateUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUser.swift; sourceTree = "<group>"; };
+		3D60BBCC2525EF55003744B3 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		3D60BBD12525FF9F003744B3 /* SearchHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeView.swift; sourceTree = "<group>"; };
 		3D64C45924DDAA6F008D37FE /* Borro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Borro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D64C45C24DDAA6F008D37FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3D64C45E24DDAA6F008D37FE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -93,7 +97,7 @@
 		3D64C47A24DDAA71008D37FE /* BorroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BorroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D64C47E24DDAA71008D37FE /* BorroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorroUITests.swift; sourceTree = "<group>"; };
 		3D64C48024DDAA71008D37FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3D64C48E24DDAF64008D37FE /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		3D64C48E24DDAF64008D37FE /* SearchedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchedView.swift; sourceTree = "<group>"; };
 		3D64C49424DDBA0A008D37FE /* ResultDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultDetail.swift; sourceTree = "<group>"; };
 		3D64C49624DE9DB7008D37FE /* MotherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotherView.swift; sourceTree = "<group>"; };
 		3D64C49824DEA675008D37FE /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
@@ -182,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				3D488A9324E55FF20045B636 /* Objects.swift */,
+				3D60BBCC2525EF55003744B3 /* TestView.swift */,
 				3D980A8024ED45B100AC9030 /* Enums.swift */,
 				3D488A9524E5A35B0045B636 /* DummyData.swift */,
 				3D488A9724E5F4DE0045B636 /* Session.swift */,
@@ -324,9 +329,10 @@
 		3D67E6982507E75F009941CF /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				3D64C48E24DDAF64008D37FE /* SearchView.swift */,
+				3D64C48E24DDAF64008D37FE /* SearchedView.swift */,
 				3D980A7E24ED339C00AC9030 /* SearchFunctions.swift */,
 				3DB451D825247BE700430A8D /* RootSearchView.swift */,
+				3D60BBD12525FF9F003744B3 /* SearchHomeView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -583,13 +589,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D60BBCD2525EF55003744B3 /* TestView.swift in Sources */,
 				3D24201324F07B380079D32A /* StorageImage.swift in Sources */,
 				3D67A52D24FA9DEF0045C11F /* NavigationView.swift in Sources */,
 				3DABDE0E24EDA22B00394DC8 /* ImageTest.swift in Sources */,
 				3D64C45D24DDAA6F008D37FE /* AppDelegate.swift in Sources */,
 				3D64C45F24DDAA6F008D37FE /* SceneDelegate.swift in Sources */,
-				3D64C48F24DDAF64008D37FE /* SearchView.swift in Sources */,
+				3D64C48F24DDAF64008D37FE /* SearchedView.swift in Sources */,
 				3D4D18112518070600C249E7 /* ItemFunctions.swift in Sources */,
+				3D60BBD22525FF9F003744B3 /* SearchHomeView.swift in Sources */,
 				3DB451D925247BE700430A8D /* RootSearchView.swift in Sources */,
 				3D386DC5250E31BC0004245A /* Alert.swift in Sources */,
 				3D64C49724DE9DB7008D37FE /* MotherView.swift in Sources */,

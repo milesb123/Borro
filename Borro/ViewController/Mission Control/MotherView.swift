@@ -28,6 +28,7 @@ struct MotherView: View {
                                             .navigationBarTitle("")
                                             .navigationBarHidden(true)
                                     }
+                                    .accentColor(Color("Teal"))
                                 }
                                 else if(self.viewRouter.currentTab == 1){
                                     RootProfileView(userID: self.localUser!.userID)
@@ -56,13 +57,10 @@ struct MotherView: View {
                         LoginView()
                     }
                 }
-                .onAppear{
-                    self.localUser = Session.shared.localUser
-                }
                 .onReceive(Session.shared.$localUser) { (user) in
                     self.localUser = user
                 }
-                
+
                 Modal()
                 
                 if(self.viewRouter.alertShown){

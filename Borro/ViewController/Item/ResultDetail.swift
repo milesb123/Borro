@@ -28,80 +28,56 @@ struct ResultDetail: View {
     var body: some View {
         ZStack{
         ScrollView(showsIndicators: false){
-            imageSection()
-            VStack{
-                VStack(alignment:.leading,spacing:20){
+            Spacer()
+                .frame(height:UIScreen.main.bounds.height*0.12)
+            VStack(spacing: 20){
+                HStack{
+                    Text(item.title)
+                        .font(.title)
+                        .bold()
+                    Spacer()
+                }
+                
+                imageSection()
+                
+                HStack(alignment:.top){
+                    VStack(alignment:.leading){
+                        Text(item.category)
+                            .font(.caption)
+                            .fontWeight(.light)
+                            .underline()
+                            .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                    }
+                    Spacer()
                     HStack{
-                        Text("Top Rated seller:")
-                            .font(.headline)
-                            .fontWeight(.bold)
+                        Image(systemName: "person.fill")
                             .foregroundColor(Color("Teal"))
-                        sellerTag(isLocalUserItem: Session.shared.userServices.userIsLocal(userID: item.sellerID))
-                        Spacer()
+                        self.sellerTag(isLocalUserItem: Session.shared.userServices.userIsLocal(userID: item.sellerID))
                     }
-                    VStack(alignment:.leading,spacing:10){
-                        VStack(alignment:.leading){
-                            Text("\(item.title)")
-                                .font(.title)
-                                .fontWeight(.bold)
-                            Text("\(item.category)")
-                                .font(.headline)
-                                .fontWeight(.light)
-                        }
-                        VStack(alignment:.leading,spacing: 5){
-                            HStack{
-                                Image(systemName:"mappin.and.ellipse")
-                                    .resizable()
-                                    .frame(width:15,height:15)
-                                    .foregroundColor(Color("Teal"))
-                                Text("0.1 Km Away")
-                                    .font(.headline)
-                                    .fontWeight(.light)
-                                Spacer()
-                                Image(systemName: "star.fill")
-                                    .resizable()
-                                    .frame(width:15,height:15)
-                                    .foregroundColor(Color("Teal"))
-                                Text("4.4")
-                                    .font(.headline)
-                                    .fontWeight(.bold)
-                                .foregroundColor(Color("Teal"))
-                                Text("(500+ Reviews)")
-                                    .font(.headline)
-                                    .fontWeight(.light)
-                                    .foregroundColor(Color("Teal"))
-                            }
-                        }
-                        
-                        HStack{
-                            Text("From £\(String(format:"%.2f",item.dailyPrice)) a day")
-                                .font(.headline)
-                                .fontWeight(.bold)
-                        }
-                    }
+                }
+                
+                HStack{
+                    Text("From £\(String(format:"%2.f",item.dailyPrice)) / day")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                    Spacer()
                 }
                 
                 borrowButton()
                 
-                VStack(alignment:.leading,spacing: 10){
-                    HStack{
-                        Text("Condition: ")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                        Text("\(item.condition)")
-                            .font(.headline)
-                            .fontWeight(.light)
-                        Spacer()
-                    }
-                    HStack{
-                        Text("Description")
-                        .font(.headline)
+                VStack(alignment:.leading,spacing:10){
+                    
+                    Text("Description")
+                        .font(.subheadline)
                         .fontWeight(.bold)
+                    Text(item.description)
+                        .font(.subheadline)
+                        .fontWeight(.light)
+                        .fixedSize(horizontal: false, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                    HStack{
                         Spacer()
                     }
-                    Text("\(item.description)")
-                        .font(.headline)
-                        .fontWeight(.light)
                 }
                 
                 Spacer()
@@ -110,10 +86,7 @@ struct ResultDetail: View {
             Spacer()
         }
         .background(Color.white)
-        //.navigationBarTitleDisplayMode(.inline)
-        .alert(isPresented: $alertIsShown) {
-            Alert(title: Text("Something Went Wrong"), message: Text("Check your connection or restart and try again"), dismissButton: .default(Text("Okay")))
-        }
+        
         }
         .onAppear{
             Session.shared.userServices.getUserByDocumentID(userID: self.item.sellerID) { (result) in
@@ -125,53 +98,27 @@ struct ResultDetail: View {
                 }
             }
         }
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
+        .navigationBarTitle(Text(item.title),displayMode: .inline)
+        .navigationBarHidden(false)
         .edgesIgnoringSafeArea(.vertical)
-  
     }
     
     private func imageSection() -> some View{
-        let capsuleHeight:CGFloat = 40
-        let imageHeight:CGFloat = 250
-        return
-        VStack{
-            ZStack{
-                if(!item.images.isEmpty){
-                    StorageImage(fullPath: self.item.images[0], cornerRadius: 0, height: imageHeight)
-                }
-                else{
+        ZStack{
+            Rectangle()
+                .foregroundColor(Color("lightGray"))
+            VStack{
+                Spacer()
+                Button(action:{}){
                     Rectangle()
-                        .foregroundColor(Color("lightGray"))
-                        .frame(height:imageHeight)
-                }
-                VStack{
-                    Spacer()
-                    Button(action:{}){
-                        ZStack{
-                            Capsule()
-                                .foregroundColor(Color("Teal"))
-                            Capsule()
-                                .strokeBorder(lineWidth: 5)
-                                .foregroundColor(Color.white)
-                            Text("See All Images")
-                                .font(.subheadline)
-                                .fontWeight(.light)
-                                .foregroundColor(Color.white)
-                        }
-                            .offset(y:capsuleHeight/2)
-                            .frame(width:200,height:capsuleHeight)
-                    }
+                        .foregroundColor(Color("Teal"))
+                        .frame(width:150,height:30)
+                        .overlay(Text("See All").font(.caption).fontWeight(.light).foregroundColor(Color.white))
                 }
             }
-            .frame(height:imageHeight)
-            Spacer()
+            .padding()
         }
-        .frame(height:imageHeight+capsuleHeight)
-    }
-    
-    private func setStockLevel(){
-        self.stock = self.item.quantity
+        .frame(height:200)
     }
     
     private func deleteItemTapped(){
@@ -239,10 +186,9 @@ struct ResultDetail: View {
             return
                 Button(action:{self.editItemTapped()}){
                 Rectangle()
-                    .foregroundColor(Color.white)
+                    .foregroundColor(Color("Teal"))
                     .frame(height:60)
-                    .padding(.vertical)
-                    .overlay(Text("Edit Item").font(.headline).fontWeight(.bold).foregroundColor(Color("Teal")))
+                    .overlay(Text("Edit Item").font(.headline).fontWeight(.bold).foregroundColor(Color.white))
             }
         }
         else{
@@ -252,8 +198,7 @@ struct ResultDetail: View {
                     Rectangle()
                         .foregroundColor(Color("Teal"))
                         .frame(height:60)
-                        .padding(.vertical)
-                        .overlay(Text("Borrow Item").font(.headline).fontWeight(.bold).foregroundColor(Color.white))
+                        .overlay(Text("Borrow Now").font(.headline).fontWeight(.bold).foregroundColor(Color.white))
                 }
             }
             else{
@@ -262,7 +207,6 @@ struct ResultDetail: View {
                     Rectangle()
                         .foregroundColor(Color("Gray"))
                         .frame(height:60)
-                        .padding(.vertical)
                         .overlay(Text("Unavailable").font(.headline).fontWeight(.bold).foregroundColor(Color.white))
                 }
             }
@@ -280,11 +224,13 @@ struct ResultDetail: View {
                 AnyView(
                 Button(action:{self.viewRouter.setNewTab(view: 1)}){
                     Text("\(seller!.fullName) (Me)")
-                        .font(.subheadline)
-                        .underline()
+                        .font(.caption)
                         .fontWeight(.light)
-                        .foregroundColor(Color.black)
+                        .underline()
+                        .fixedSize(horizontal: false, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
                 }
+                .buttonStyle(PlainButtonStyle())
                 )
             }
             else{
@@ -292,11 +238,13 @@ struct ResultDetail: View {
                 AnyView(
                 NavigationLink(destination: RootProfileView(userID: item.sellerID)) {
                     Text("\(seller!.fullName)")
-                    .font(.subheadline)
-                    .underline()
-                    .fontWeight(.light)
-                    .foregroundColor(Color.black)
+                        .font(.caption)
+                        .fontWeight(.light)
+                        .underline()
+                        .fixedSize(horizontal: false, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
                 }
+                .buttonStyle(PlainButtonStyle())
                 )
             }
         }
@@ -305,45 +253,17 @@ struct ResultDetail: View {
             AnyView(
             Button(action:{}){
                 Text("Unknown")
-                    .font(.subheadline)
-                    .underline()
+                    .font(.caption)
                     .fontWeight(.light)
-                    .foregroundColor(Color.black)
+                    .underline()
+                    .fixedSize(horizontal: false, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                    .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
             }
+            .buttonStyle(PlainButtonStyle())
             )
         }
         
         return anyView
-    }
-    
-    private func stockStatus() -> Text{
-        
-        if(stock > 0){
-            return
-            Text("In Stock")
-                .foregroundColor(Color("Teal"))
-                .font(.subheadline)
-                .fontWeight(.bold)
-        }
-        else{
-            return
-            Text("Out of Stock")
-                .foregroundColor(Color.red)
-                .font(.subheadline)
-                .fontWeight(.bold)
-        }
-    }
-    
-    private func distanceText() -> Text{
-        
-        let string = distanceKm.description
-        
-        return
-            Text("\(string) Km Away")
-            .font(.body)
-            .fontWeight(.thin)
-        
-        
     }
     
 }

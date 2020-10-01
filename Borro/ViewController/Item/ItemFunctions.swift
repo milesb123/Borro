@@ -123,7 +123,7 @@ struct ItemFunctions: View {
                                 }
                                 else{
                                     if(self.item != nil){
-                                        ForEach((self.identifiableList(array: self.displayUIImages())), id: \.self.1){img in
+                                        ForEach((self.identifiableList(array: [])), id: \.self.1){img in
                                             ZStack{
                                                 VStack{
                                                     Image(uiImage: img.0 as! UIImage)
@@ -184,6 +184,7 @@ struct ItemFunctions: View {
                 }
                 Button(action:{self.submitChanges()}){Capsule().frame(width:150,height:50).foregroundColor(Color("Teal")).overlay(Text("Submit").font(.headline).fontWeight(.bold).foregroundColor(Color.white))}.padding()
                     .padding(.vertical)
+                
                 Spacer()
                     .frame(height:UIScreen.main.bounds.height*0.4)
             }

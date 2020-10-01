@@ -10,39 +10,51 @@ import SwiftUI
 
 struct RootSearchView: View {
     
+    @State var searchSubmission:SearchSubmission?
     @State var searchField:String = ""
+    @State var results:[Item] = []
+    
+    @State var searchBarSpace:CGFloat = UIScreen.main.bounds.height*0.15
     
     var body: some View{
         GeometryReader{ geo in
             VStack(spacing:0){
-                //searchBar(geo: geo)
                 GeometryReader{ container in
                     VStack{
                         Spacer()
-                            .frame(height:geo.size.height*0.15)
+                            .frame(height:self.searchBarSpace)
                         if(self.searchField.isEmpty){
-                            WelcomeSearchView()
+                            SearchHomeView()
+                                .onAppear{
+                                    self.searchBarSpace = UIScreen.main.bounds.height*0.15
+                                }
                         }
                         else{
-                            SearchView(searchField: $searchField)
+                            SearchedView(searchField: $searchField, results: $results)
+                                .onAppear{
+                                    self.searchBarSpace = UIScreen.main.bounds.height*0.2
+                                }
                         }
                     }
                     .frame(height:container.size.height)
                 }
             }
             .frame(width:geo.size.width)
-            .overlay(VStack{searchBar(geo: geo);Spacer()})
+            .overlay(VStack{searchBar();Spacer()})
+            
         }
-        //.edgesIgnoringSafeArea(.vertical)
+        .edgesIgnoringSafeArea(.top)
     }
     
-    private func searchBar(geo:GeometryProxy) -> some View{
+    private func searchBar() -> some View{
         return
         VStack{
             Spacer()
                 //.frame(height:20)
             HStack{
-                TextField("Search Here", text: $searchField)
+                TextField("Search Here", text: $searchField,onCommit: {
+                        self.didCommit(searchSubmission: SearchSubmission(text: self.searchField, filters: []))
+                })
                     .font(.subheadline)
                 Image(systemName: "magnifyingglass")
                     .resizable()
@@ -52,95 +64,46 @@ struct RootSearchView: View {
             Rectangle()
                 .frame(height:1)
                 .padding(.vertical,5)
-        }
-        .padding()
-        .background(Color.white.shadow(radius: 5))
-        .frame(height:geo.size.height*0.15)
-    }
-}
-
-struct WelcomeSearchView:View{
-    
-    var body: some View {
-        GeometryReader{ geo in
-            ScrollView{
-                VStack(spacing:0){
-                    promotionHeader()
-                    VStack{
-                        HStack{
-                            Text("Top Categories")
-                                .font(.headline)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color.black)
-                            Spacer()
-                        }
-                        HStack{
-                            categoryView()
-                            categoryView()
-                        }
-                        HStack{
-                            categoryView()
-                            categoryView()
-                        }
-                    }
-                    .padding()
-                    .foregroundColor(Color("lightGray"))
-                    Button(action:{}){
-                        Text("See All Categories")
-                            .font(.subheadline)
-                            .fontWeight(.light)
-                            .foregroundColor(Color("Teal"))
-                    }
-                    VStack{
-                        HStack{
-                            Text("We thought you'd be interested in...")
-                                .font(.headline)
-                                .fontWeight(.light)
-                            Spacer()
-                        }
-                        resultPreview()
-                    }
-                    .padding()
-                    Spacer()
+            HStack{
+                if(!self.searchField.isEmpty){
+                    self.searchTrayButton(text: "Filters", action: {})
+                    self.searchTrayButton(text: "Sort By", action: {})
                 }
             }
         }
-    }
-    private func promotionHeader() -> some View{
-        return
-        Button(action:{}){
-            Rectangle()
-                .frame(height:180)
-                .foregroundColor(Color("Teal"))
-        }
+        .padding()
+        .background(Color.white.shadow(radius: 5))
+        .frame(height:self.searchBarSpace)
     }
     
-    private func categoryView() -> some View{
+    func searchTrayButton(text:String, action:@escaping()->Void) -> some View{
         return
-        Button(action:{}){
-            Rectangle()
-                .frame(height:100)
-        }
+            Button(action:{action()}){
+                Rectangle()
+                    .foregroundColor(Color("Teal"))
+                    .frame(height:30)
+                    .overlay(Text(text).font(.subheadline).fontWeight(.light).foregroundColor(Color.white))
+            }
     }
     
-    private func resultPreview() -> some View{
-        return
-        ScrollView(.horizontal, showsIndicators: false){
-            Button(action:{}){
-            Rectangle()
-                .foregroundColor(Color("lightGray"))
-                .frame(width:100,height:100)
+    func didCommit(searchSubmission:SearchSubmission){
+        Session.shared.itemServices.getAllItems { optionalItems,err in
+            if let err = err{
+                print(err)
+            }
+            if let rawItems = optionalItems{
+                self.results = SearchFunctions.filterBySearch(search: Search(text: searchSubmission.text, filters: searchSubmission.filters), items: rawItems)
             }
         }
     }
     
-}
-
-struct SearchResultsView:View{
-    
-    var body: some View{
-        Text("")
+    struct SearchSubmission{
+        
+        let text:String
+        let filters:[Filter]
+        
     }
+    
 }
 
 struct RootSearchView_Previews: PreviewProvider {

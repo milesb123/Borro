@@ -12,9 +12,11 @@ import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
 
-class Session{
-    
+class Session:ObservableObject{
+        
     static let shared = Session()
+    
+    private init(){}
     
     @Published var localUser:User?
     
@@ -84,9 +86,7 @@ struct NewUserSubmission{
 }
 
 class UserServices{
-    
-    let session:Session = Session.shared
-    
+        
     var users = Firestore.firestore().collection("users")
     
     //Takes a user submission and returns a dictionary uploadable to firebase
@@ -141,7 +141,7 @@ class UserServices{
                         completionHandler(error)
                     }
                     if let user = user{
-                        self.session.localUser = user
+                        Session.shared.localUser = user
                     }
                 }
             }
@@ -166,7 +166,7 @@ class UserServices{
                                 completionHandler(err)
                             }
                             else{
-                                self.session.localUser = user
+                                Session.shared.localUser = user
                             }
                         }
                     }
@@ -250,7 +250,7 @@ class UserServices{
     //Returns true if the user in question is the local user
     func userIsLocal(userID:String) -> Bool{
     
-        if let localUser = self.session.localUser{
+        if let localUser = Session.shared.localUser{
             if(userID == localUser.userID){
                 return true
             }
@@ -266,8 +266,6 @@ class UserServices{
 }
 
 class ItemServices{
-    
-    let session:Session = Session.shared
     
     var items = Firestore.firestore().collection("items")
     

@@ -22,6 +22,35 @@ struct ProfileView: View {
         VStack{
             if(user != nil){
             VStack{
+                if(self.isLocalUser){
+                    HStack{
+                        Text("Borro.")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color("Teal"))
+                            .padding()
+                    }
+                    .frame(width:UIScreen.main.bounds.width)
+                    .background(ZStack{VStack{Spacer();Color.white.shadow(radius: 2).frame(height:1)};Color.white})
+                    .overlay(
+                        HStack{
+                            Button(action:{}){
+                            Spacer()
+                            Image(systemName:"gear")
+                                .resizable()
+                                .foregroundColor(Color("Teal"))
+                                .frame(width:30,height:30)
+                            }
+                            .padding()
+                        }
+                    )
+                }
+                /*
+                else{
+                    
+                }
+                 */
+                /*
                 ZStack{
                     VStack{
                         Spacer()
@@ -50,13 +79,14 @@ struct ProfileView: View {
                     .background(Color.white)
                 }
                 .frame(height:60)
+                */
                 VStack{
                     if(currentView == 0){
                         ScrollView(showsIndicators: false){
                             VStack(spacing: 20){
                                 ZStack{
                                     ZStack{
-                                        if(user.image != nil){
+                                        if(false){
                                             StorageImage(fullPath: user.image, width: 180, height: 180)
                                                 .clipShape(Circle())
                                                 // Replace second unwrap with uiimage loaded from assets, as this unwrap is unsafe
@@ -94,21 +124,8 @@ struct ProfileView: View {
                                         }
                                     }
                                     .frame(width:180,height:180)
-                                    VStack{
-                                        HStack{
-                                            Spacer()
-                                            Button(action:{}){
-                                                Image(systemName:"gear")
-                                                    .resizable()
-                                                    .foregroundColor(Color.black)
-                                                    .frame(width:40,height:40)
-                                            }
-                                            
-                                        }
-                                        Spacer()
-                                    }
                                 }
-                                
+                                .padding(.top)
                                 VStack(spacing:10){
                                     Text("\(self.user.fullName)")
                                         .foregroundColor(Color.black)
@@ -122,16 +139,6 @@ struct ProfileView: View {
                                         .font(.headline)
                                         .multilineTextAlignment(.center)
                                         .fixedSize(horizontal: false, vertical: true)
-                                    HStack{
-                                        Text("Top Rated Seller |")
-                                            .font(.headline)
-                                            .fontWeight(.bold)
-                                            .foregroundColor(Color("Teal"))
-                                        Text("4.4 (500+ Reviews)")
-                                            .font(.headline)
-                                            .fontWeight(.light)
-                                            .foregroundColor(Color("Teal"))
-                                    }
                                 }
                                 
                                 
@@ -221,8 +228,9 @@ struct ProfileView: View {
                 Text("Profile not yet loaded")
             }
         }
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
+        .navigationBarTitle(Text(self.user.fullName),displayMode: .inline)
+        .navigationBarHidden(false)
+        //.edgesIgnoringSafeArea(.vertical)
     }
     
     func loadItems(){
@@ -270,7 +278,6 @@ struct ProfileView: View {
             //.underline()
         }
         .buttonStyle(PlainButtonStyle())
-        .animation(.easeInOut)
     }
     
     func tabSelected(thisView:Int){
@@ -281,7 +288,7 @@ struct ProfileView: View {
         return
             NavigationLink(destination: ResultDetail(item: item, isLocalUserItem: isLocalUser)){
                 HStack(spacing: 20){
-                    if(!item.images.isEmpty){
+                    if(false){
                         StorageImage(fullPath: item.images[0], cornerRadius: 0, width: 60, height: 60)
                     }
                     else{
@@ -329,6 +336,7 @@ struct RootProfileView: View {
                             .navigationBarTitle("")
                             .navigationBarHidden(true)
                         }
+                        .accentColor(Color("Teal"))
                         .padding(0)
                     }
                     else{
