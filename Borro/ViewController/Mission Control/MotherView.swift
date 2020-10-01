@@ -24,7 +24,7 @@ struct MotherView: View {
                             VStack{
                                 if(self.viewRouter.currentTab == 0){
                                     NavigationView{
-                                        SearchView()
+                                        RootSearchView()
                                             .navigationBarTitle("")
                                             .navigationBarHidden(true)
                                     }

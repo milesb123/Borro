@@ -10,51 +10,13 @@ import SwiftUI
 
 struct SearchView: View {
     
-    @State var searchField:String = ""
+    @Binding var searchField:String
     @State var filters:[Filter] = []
     @State var results:[Item] = []
     
     var body: some View {
         //NavigationView{
             VStack(spacing:0){
-                VStack(spacing:10){
-                    ZStack{
-                    VStack{
-                        Spacer()
-                        Color.white.shadow(radius: 5)
-                            .frame(height:1)
-                        
-                    }
-                    VStack{
-                        Spacer()
-                            .frame(height:20)
-                        HStack(spacing: 30){
-                            Capsule()
-                            .foregroundColor(Color("lightGray"))
-                                .frame(height:40)
-                                .overlay(HStack{
-                                    TextField("I want to borrow a...", text: $searchField,
-                                              onCommit:{self.didCommitSearch(text: self.searchField, filters: self.filters)})
-                                        .foregroundColor(Color.black)
-                                        .font(.subheadline)
-                                    Image(systemName:"magnifyingglass")
-                                        .resizable()
-                                        .frame(width:20,height:20)
-                                    }.foregroundColor(Color.black).padding())
-                            Button(action:{}){
-                                Image(systemName:"slider.horizontal.3")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundColor(Color.black)
-                                    .frame(width:30,height:30)
-                            }
-                        }
-                        .padding()
-                    }
-                    .background(Color.white)
-                    }
-                    .frame(height:60)
-                }
                 VStack(spacing:0){
                     if(!self.results.isEmpty){
                         HStack{
@@ -266,10 +228,4 @@ struct SearchResultView:View{
         }
     }
     
-}
-
-struct SearchResults_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchView()
-    }
 }

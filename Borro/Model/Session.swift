@@ -18,8 +18,8 @@ class Session{
     
     @Published var localUser:User?
     
-    let userServices = UserServices(session: shared)
-    let itemServices = ItemServices(session: shared)
+    let userServices = UserServices()
+    let itemServices = ItemServices()
     
     
     func uploadImage(path:String,data:Data,completionHandler:@escaping ((StorageMetadata?,Error?)->Void)){
@@ -85,13 +85,9 @@ struct NewUserSubmission{
 
 class UserServices{
     
-    let session:Session
+    let session:Session = Session.shared
     
     var users = Firestore.firestore().collection("users")
-    
-    init(session:Session){
-        self.session = session
-    }
     
     //Takes a user submission and returns a dictionary uploadable to firebase
     func userToData(userSubmission:UserSubmission)->[String:Any]{
@@ -271,13 +267,9 @@ class UserServices{
 
 class ItemServices{
     
-    let session:Session
+    let session:Session = Session.shared
     
     var items = Firestore.firestore().collection("items")
-    
-    init(session:Session){
-        self.session=session
-    }
     
     //Takes an Item returns a dictionary uploadable to Firebase
     func itemToData(){}

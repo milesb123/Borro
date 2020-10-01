@@ -41,6 +41,7 @@
 		3DABDE0E24EDA22B00394DC8 /* ImageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABDE0D24EDA22B00394DC8 /* ImageTest.swift */; };
 		3DABDE1024EDAB3600394DC8 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABDE0F24EDAB3600394DC8 /* ImageLoader.swift */; };
 		3DABDE1224EDAE7800394DC8 /* URLImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABDE1124EDAE7800394DC8 /* URLImage.swift */; };
+		3DB451D925247BE700430A8D /* RootSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB451D825247BE700430A8D /* RootSearchView.swift */; };
 		9428353A389E9DC85A7CCC6C /* Pods_Borro_BorroUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786C53A86B09004FA643845 /* Pods_Borro_BorroUITests.framework */; };
 		D0AF3EA13585C73C9CA6B1B7 /* Pods_Borro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14CC5F0522947B6846EC674B /* Pods_Borro.framework */; };
 		DF8420E33FDBD0E5B93C128F /* Pods_BorroTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A90214695AAC1578CF5F30A /* Pods_BorroTests.framework */; };
@@ -105,6 +106,7 @@
 		3DABDE0D24EDA22B00394DC8 /* ImageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTest.swift; sourceTree = "<group>"; };
 		3DABDE0F24EDAB3600394DC8 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		3DABDE1124EDAE7800394DC8 /* URLImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImage.swift; sourceTree = "<group>"; };
+		3DB451D825247BE700430A8D /* RootSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSearchView.swift; sourceTree = "<group>"; };
 		3E32FBB3BBBE51C60F7F0CBF /* Pods-Borro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Borro.release.xcconfig"; path = "Target Support Files/Pods-Borro/Pods-Borro.release.xcconfig"; sourceTree = "<group>"; };
 		4CE504815C8946C30F3C4F01 /* Pods-Borro-BorroUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Borro-BorroUITests.debug.xcconfig"; path = "Target Support Files/Pods-Borro-BorroUITests/Pods-Borro-BorroUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		500CE2BF1BCE67E936226FC3 /* Pods-Borro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Borro.debug.xcconfig"; path = "Target Support Files/Pods-Borro/Pods-Borro.debug.xcconfig"; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 			children = (
 				3D64C48E24DDAF64008D37FE /* SearchView.swift */,
 				3D980A7E24ED339C00AC9030 /* SearchFunctions.swift */,
+				3DB451D825247BE700430A8D /* RootSearchView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 				3D64C45F24DDAA6F008D37FE /* SceneDelegate.swift in Sources */,
 				3D64C48F24DDAF64008D37FE /* SearchView.swift in Sources */,
 				3D4D18112518070600C249E7 /* ItemFunctions.swift in Sources */,
+				3DB451D925247BE700430A8D /* RootSearchView.swift in Sources */,
 				3D386DC5250E31BC0004245A /* Alert.swift in Sources */,
 				3D64C49724DE9DB7008D37FE /* MotherView.swift in Sources */,
 				3D980A8124ED45B100AC9030 /* Enums.swift in Sources */,
