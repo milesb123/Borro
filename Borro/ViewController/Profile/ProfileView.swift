@@ -21,7 +21,7 @@ struct ProfileView: View {
     var body: some View{
         VStack{
             if(user != nil){
-            VStack{
+                VStack(spacing:0){
                 if(self.isLocalUser){
                     HStack{
                         Text("Borro.")
@@ -45,144 +45,10 @@ struct ProfileView: View {
                         }
                     )
                 }
-                /*
-                else{
-                    
-                }
-                 */
-                /*
-                ZStack{
-                    VStack{
-                        Spacer()
-                        Color.white.frame(height:1).shadow(radius: 5)
-                    }
-                    VStack{
-                        Spacer()
-                            .frame(height:20)
-                        HStack{
-                            Spacer()
-                            self.viewTab(thisView: 0, text: "Store")
-                            Spacer()
-                            if(isLocalUser){
-                                self.viewTab(thisView: 1, text: "Activity")
-                                Spacer()
-                            }
-                            self.viewTab(thisView: 2, text: "Reviews")
-                            Spacer()
-                            if(isLocalUser){
-                                self.viewTab(thisView: 3, text: "Favourites")
-                                Spacer()
-                            }
-                        }
-                        .padding(.vertical)
-                    }
-                    .background(Color.white)
-                }
-                .frame(height:60)
-                */
+                
                 VStack{
                     if(currentView == 0){
-                        ScrollView(showsIndicators: false){
-                            VStack(spacing: 20){
-                                ZStack{
-                                    ZStack{
-                                        if(false){
-                                            StorageImage(fullPath: user.image, width: 180, height: 180)
-                                                .clipShape(Circle())
-                                                // Replace second unwrap with uiimage loaded from assets, as this unwrap is unsafe
-                                                .onAppear{
-                                                    print("loaded from image data")
-                                                }
-                                        }
-                                        else{
-                                            Image(systemName: "person.crop.circle.fill") //Default picture needed
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .clipShape(Circle())
-                                                .foregroundColor(Color("lightGray"))
-                                                .frame(width:180,height:180)
-                                        }
-                                        if(isLocalUser){
-                                            VStack{
-                                                Spacer()
-                                                HStack{
-                                                    Spacer()
-                                                    Button(action:{self.editProfileTapped()}){
-                                                        ZStack{
-                                                            Circle()
-                                                                .foregroundColor(Color.white)
-                                                                .shadow(radius: 2)
-                                                            Image(systemName:"pencil.circle.fill")
-                                                                .resizable()
-                                                                .foregroundColor(Color("Teal"))
-                                                        }
-                                                        .frame(width:40,height:40)
-                                                        //.offset(x: 5, y: 5)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    .frame(width:180,height:180)
-                                }
-                                .padding(.top)
-                                VStack(spacing:10){
-                                    Text("\(self.user.fullName)")
-                                        .foregroundColor(Color.black)
-                                        .fontWeight(.bold)
-                                        .font(.title)
-                                        .multilineTextAlignment(.center)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                    Text("\(self.user.sellerBio)")
-                                        .foregroundColor(Color.black)
-                                        .fontWeight(.light)
-                                        .font(.headline)
-                                        .multilineTextAlignment(.center)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                }
-                                
-                                
-                                VStack{
-                                    if(isLocalUser){
-                                        HStack{
-                                            Text("My Items")
-                                                .font(.title)
-                                                .fontWeight(.bold)
-                                            Spacer()
-                                            Button(action:{self.addItemTapped()}){
-                                                ZStack{
-                                                    Circle()
-                                                        .foregroundColor(Color("Teal"))
-                                                        .shadow(radius: 2)
-                                                        
-                                                    Image(systemName: "plus")
-                                                        .resizable()
-                                                        .foregroundColor(Color.white)
-                                                        .frame(width:20,height:20)
-                                                }
-                                                .frame(width:40,height:40)
-                                            }
-                                        }
-                                    }
-                                    else{
-                                        HStack{
-                                            Text("All Items")
-                                                .font(.title)
-                                                .fontWeight(.bold)
-                                            Spacer()
-                                        }
-                                    }
-                                }
-                                
-                                
-                                ForEach(items, id: \.itemID){result in
-                                    self.itemPreviewBar(item:result)
-                                }
-                                
-                                Spacer()
-                            }
-                            .padding(.top)
-                        }
+                        StoreView(loadItems:self.loadItems,isLocalUser:self.$isLocalUser,user:self.$user,items:self.$items)
                     }
                     else if(currentView == 1){
                         VStack{
@@ -218,7 +84,7 @@ struct ProfileView: View {
                         }
                     }
                 }
-                .padding(.horizontal,20)
+                .padding(.horizontal)
             }
             .onAppear{
                 self.loadItems()
@@ -231,32 +97,6 @@ struct ProfileView: View {
         .navigationBarTitle(Text(self.user.fullName),displayMode: .inline)
         .navigationBarHidden(false)
         //.edgesIgnoringSafeArea(.vertical)
-    }
-    
-    func loadItems(){
-        Session.shared.itemServices.getItemsByUser(userID: self.user.userID) { optionalItems,err in
-            if let err = err{
-                print(err)
-            }
-            if let items = optionalItems{
-                self.items = items
-            }
-        }
-    }
-    
-    
-    func dismissModal(){
-        self.viewRouter.dismissModal()
-        self.loadItems()
-    }
-    
-    func addItemTapped(){
-        self.viewRouter.presentModal( modalContent: AnyView(ItemFunctions(itemFunction: ItemFunctions.ItemFunction.create, dismissModal: self.dismissModal, item: nil, user: self.user)))
-    }
-    
-    func editProfileTapped(){
-        self.viewRouter.dismissModal()
-        self.viewRouter.presentModal(modalContent: AnyView(EditProfile(user: $user)))
     }
     
     func viewTab(thisView:Int,text:String) -> some View{
@@ -284,38 +124,178 @@ struct ProfileView: View {
         self.currentView = thisView
     }
     
-    func itemPreviewBar(item:Item) -> some View{
-        return
-            NavigationLink(destination: ResultDetail(item: item, isLocalUserItem: isLocalUser)){
-                HStack(spacing: 20){
-                    if(false){
-                        StorageImage(fullPath: item.images[0], cornerRadius: 0, width: 60, height: 60)
-                    }
-                    else{
-                        Rectangle()
-                            .foregroundColor(Color("lightGray"))
-                            .frame(width:60,height:60)
-                    }
-                    VStack(alignment: .leading){
-                        Group{
-                            Text("\(item.title)")
-                                .font(.headline)
-                                .fontWeight(.bold)
-                            Text("\(item.category)")
-                                .font(.subheadline)
-                                .fontWeight(.light)
+    func loadItems() -> Void{
+        Session.shared.itemServices.getItemsByUser(userID: self.user.userID) { optionalItems,err in
+            if let err = err{
+                print(err)
+            }
+            if let items = optionalItems{
+                self.items = items
+            }
+        }
+    }
+    
+    struct StoreView:View{
+        
+        let loadItems:()->Void
+        
+        @EnvironmentObject var viewRouter:ViewRouter
+        
+        @Binding var isLocalUser:Bool
+        
+        @Binding var user:User
+        @Binding var items:[Item]
+        
+        var body:some View{
+            ScrollView(showsIndicators: false){
+                VStack(spacing: 20){
+                    //Image Section
+                    ZStack{
+                        if(false){
+                            StorageImage(fullPath: user.image, width: 180, height: 180)
+                                .clipShape(Circle())
+                                .onAppear{
+                                    print("loaded from image data")
+                                }
                         }
-                        .font(.body)
-                        .fixedSize(horizontal: false, vertical: true)
-                        Spacer()
+                        else{
+                            Image(systemName: "person.crop.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(Circle())
+                                .foregroundColor(Color("lightGray"))
+                                .frame(width:180,height:180)
+                        }
+                        if(isLocalUser){
+                            VStack{
+                                Spacer()
+                                HStack{
+                                    Spacer()
+                                    Button(action:{editProfileTapped()}){
+                                        ZStack{
+                                            Circle()
+                                                .foregroundColor(Color.white)
+                                                .shadow(radius: 2)
+                                            Image(systemName:"pencil.circle.fill")
+                                                .resizable()
+                                                .foregroundColor(Color("Teal"))
+                                        }
+                                        .frame(width:40,height:40)
+                                    }
+                                }
+                            }
+                        }
                     }
+                    .frame(width:180,height:180)
+                    .padding(.top)
+                    
+                    //User Details Section
+                    VStack(spacing:10){
+                        Text("\(self.user.fullName)")
+                            .foregroundColor(Color.black)
+                            .fontWeight(.bold)
+                            .font(.title)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("\(self.user.sellerBio)")
+                            .foregroundColor(Color.black)
+                            .fontWeight(.light)
+                            .font(.headline)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    
+                    //Items
+                    VStack{
+                        if(isLocalUser){
+                            HStack{
+                                Text("My Items")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                Spacer()
+                                Button(action:{self.addItemTapped()}){
+                                    ZStack{
+                                        Circle()
+                                            .foregroundColor(Color("Teal"))
+                                            .shadow(radius: 2)
+                                            
+                                        Image(systemName: "plus")
+                                            .resizable()
+                                            .foregroundColor(Color.white)
+                                            .frame(width:20,height:20)
+                                    }
+                                    .frame(width:40,height:40)
+                                }
+                            }
+                        }
+                        else{
+                            HStack{
+                                Text("All Items")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                Spacer()
+                            }
+                        }
+                    }
+                    
+                    
+                    ForEach(items, id: \.itemID){result in
+                        self.itemPreviewBar(item:result)
+                    }
+                    
                     Spacer()
                 }
+                .padding(.top)
+            }
+        }
+        
+        func itemPreviewBar(item:Item) -> some View{
+            return
+                NavigationLink(destination: ResultDetail(item: item, isLocalUserItem: isLocalUser)){
+                    HStack(spacing: 20){
+                        if(false){
+                            StorageImage(fullPath: item.images[0], cornerRadius: 0, width: 60, height: 60)
+                        }
+                        else{
+                            Rectangle()
+                                .foregroundColor(Color("lightGray"))
+                                .frame(width:60,height:60)
+                        }
+                        VStack(alignment: .leading){
+                            Group{
+                                Text("\(item.title)")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                Text("\(item.category)")
+                                    .font(.subheadline)
+                                    .fontWeight(.light)
+                            }
+                            .font(.body)
+                            .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
+                        }
+                        Spacer()
+                    }
+                .buttonStyle(PlainButtonStyle())
+            }
             .buttonStyle(PlainButtonStyle())
         }
-        .buttonStyle(PlainButtonStyle())
-    }
         
+        func dismissModal(){
+            self.viewRouter.dismissModal()
+            self.loadItems()
+        }
+        
+        func addItemTapped(){
+            self.viewRouter.presentModal( modalContent: AnyView(ItemFunctions(itemFunction: ItemFunctions.ItemFunction.create, dismissModal: self.dismissModal, item: nil, user: self.user)))
+        }
+        
+        func editProfileTapped(){
+            self.viewRouter.dismissModal()
+            self.viewRouter.presentModal(modalContent: AnyView(EditProfile(user: $user)))
+        }
+    }
+    
 }
 
 struct RootProfileView: View {

@@ -67,6 +67,7 @@ struct ItemFunctions: View {
             }
             ScrollView{
                 VStack(alignment: .leading,spacing:20){
+                    //Helper Text
                     if(itemFunction == ItemFunction.edit){
                         Text("Edit the fields where relevant and tap submit when your’e finished")
                             .font(.headline)
@@ -78,7 +79,10 @@ struct ItemFunctions: View {
                             .font(.headline)
                             .fontWeight(.light)
                     }
-                    field(title: "Title", placeholderText: "Enter the title of the item", bindingValue: $title, validationBinding: $titleValid,completionHandler: {self.validateField(field: Field.title)})
+                    //Title
+                    field(title: "Title", placeholderText: "Enter the title of the item", bindingValue: $title, validationBinding: $titleValid,completionHandler: {self.validateField(field: FieldType.title)})
+                    
+                    //Image Section
                     Group{
                         Text("Images")
                             .font(.headline)
@@ -92,7 +96,7 @@ struct ItemFunctions: View {
                                                 
                                                 ZStack{
                                                     VStack{
-                                                        img.0 as! StorageImage
+                                                        img.0
                                                         Spacer()
                                                     }
                                                     VStack{
@@ -103,7 +107,7 @@ struct ItemFunctions: View {
                                                                 .frame(height:15)
                                                                 .overlay(Text("Delete Image").foregroundColor(Color.white).font(.system(size: 10)).fontWeight(.light))
                                                                 .onTapGesture{
-                                                                    if let uiimage = (img.0 as! StorageImage).imageLoader.downloadedImage{
+                                                                    if let uiimage = (img.0).imageLoader.downloadedImage{
                                                                         self.deleteImage(img: (uiimage))
                                                                     }
                                                             }
@@ -162,6 +166,8 @@ struct ItemFunctions: View {
                             .fontWeight(.light)
                             .foregroundColor(Color.gray)
                     }
+                    
+                    //Condition Picker
                     Group{
                         Text("Condtion")
                             .font(.headline)
@@ -176,12 +182,15 @@ struct ItemFunctions: View {
                             .fontWeight(.light)
                             .foregroundColor(Color.gray)
                     }
-                    field(title: "Category", placeholderText: "Select the category of the item", bindingValue: $category, validationBinding: $categoryValid,completionHandler: {self.validateField(field: Field.category)})
-                    field(title: "Daily Price", placeholderText: "Price per day", bindingValue: $dailyPrice, validationBinding: $dailyPriceValid,helperText: "Enter the price it would cost someone to borrow your item per day",keyboardType:.numberPad,currency: "£",completionHandler: {self.validateField(field: Field.dailyPrice)})
-                    field(title: "Available Quantity", placeholderText: "Enter quantity", bindingValue: $quantity, validationBinding: $quantityValid,keyboardType: .numberPad){self.validateField(field: Field.availableQuantity)}
-                    field(title: "Description", placeholderText: "Enter a description", bindingValue: $description, validationBinding: $descriptionValid, completionHandler: {self.validateField(field: Field.description)})
-                    field(title:"Pick Up Location",placeholderText: "Enter pickup location",bindingValue: $pickUpLocation, validationBinding: $pickUpLocationValid,helperText: "Enter the location a customer should pick up the item from, read our safety guidlines here",completionHandler: {self.validateField(field: Field.pickUpLocation)})
+                    
+                    //Simple Fields
+                    field(title: "Category", placeholderText: "Select the category of the item", bindingValue: $category, validationBinding: $categoryValid,completionHandler: {self.validateField(field: FieldType.category)})
+                    field(title: "Daily Price", placeholderText: "Price per day", bindingValue: $dailyPrice, validationBinding: $dailyPriceValid,helperText: "Enter the price it would cost someone to borrow your item per day",keyboardType:.numberPad,currency: "£",completionHandler: {self.validateField(field: FieldType.dailyPrice)})
+                    field(title: "Available Quantity", placeholderText: "Enter quantity", bindingValue: $quantity, validationBinding: $quantityValid,keyboardType: .numberPad){self.validateField(field: FieldType.availableQuantity)}
+                    field(title: "Description", placeholderText: "Enter a description", bindingValue: $description, validationBinding: $descriptionValid, completionHandler: {self.validateField(field: FieldType.description)})
+                    field(title:"Pick Up Location",placeholderText: "Enter pickup location",bindingValue: $pickUpLocation, validationBinding: $pickUpLocationValid,helperText: "Enter the location a customer should pick up the item from, read our safety guidlines here",completionHandler: {self.validateField(field: FieldType.pickUpLocation)})
                 }
+                //Submit Button
                 Button(action:{self.submitChanges()}){Capsule().frame(width:150,height:50).foregroundColor(Color("Teal")).overlay(Text("Submit").font(.headline).fontWeight(.bold).foregroundColor(Color.white))}.padding()
                     .padding(.vertical)
                 
@@ -207,89 +216,18 @@ struct ItemFunctions: View {
         })
     }
     
-    func addImageTapped(){
-        self.pickerIsPresented = true
-    }
-    
-    func deleteImage(img:UIImage){
-        
-        if let index = self.downloadedMedia.firstIndex(where:{ $0.imageLoader.downloadedImage == img}){
-            self.downloadedMedia.remove(at: index)
-            return
-        }
-        
-        if let index = self.uploadImages.firstIndex(where:{ $0 == img}){
-            self.uploadImages.remove(at: index)
-            return
-        }
-        
-    }
-    
-    func finishedPickingImage(){
-        
-        //REFACTOR so that it only adds new images
-        
-        //Add uploaded image tp upload list
-        
-        if let img = self.chosenImage{
-            self.uploadImages.append(img)
-        }
-        
-        //Dismiss Picker
-        
-        self.pickerIsPresented = false
-        
-    }
-    
-    func displayUIImages() -> [UIImage]{
-        var images:[UIImage] = []
-        
-        for img in self.downloadedMedia{
-            if let uiimg = img.imageLoader.downloadedImage{
-                images.append(uiimg)
-            }
-        }
-        
-        for img in self.uploadImages{
-            images.append(img)
-        }
-        
-        return images
-    }
-    
-    func loadImages(item:Item){
-        
-        for img in item.images{
-            self.downloadedMedia.append(StorageImage(fullPath:img,height:100,contentMode:.fit))
-        }
-        
-    }
-    
-    func identifiableList(array:[Any]) -> [(Any,UUID)]{
-        
-        var newList:[(Any,UUID)] = []
-        
-        for e in array{
-            newList.append((e,UUID()))
-        }
-        
-        return newList
-    }
-    
-    func setCondtionPicker(itemCondtion:String){
-        self.conditionTag = self.conditions.firstIndex(of: itemCondtion) ?? 2
-    }
+    //Returns a field view
     
     func field(title:String = "field",placeholderText:String = "Enter field",bindingValue:Binding<String>,validationBinding:Binding<(Bool,ErrorType?)?>,helperText:String?=nil,keyboardType:UIKeyboardType=UIKeyboardType.default,currency:String?=nil,completionHandler:@escaping ()->Void) -> some View{
-        
-        
-        
         return
             VStack(alignment:.leading){
+                //Title
                 Text(title)
                     .font(.headline)
                     .fontWeight(.bold)
                     .font(.subheadline)
+                
+                //Adds currency label
                 if(currency != nil){
                     HStack{
                         Text(currency!)
@@ -312,6 +250,8 @@ struct ItemFunctions: View {
                 
                 Rectangle()
                     .frame(height:0.5)
+                
+                //Adds helper text
                 if (helperText != nil){
                     Text(helperText!)
                         .foregroundColor(Color.gray)
@@ -319,6 +259,7 @@ struct ItemFunctions: View {
                         .fontWeight(.light)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                //Adds error message
                 if (validationBinding.wrappedValue != nil && validationBinding.wrappedValue!.1 != nil){
                     Text(self.returnErrorMessage(error: validationBinding.wrappedValue!.1!) ?? "")
                         .foregroundColor(Color.red)
@@ -329,25 +270,110 @@ struct ItemFunctions: View {
         }
     }
     
-    func validateField(field:Field){
+    //Images
+    
+    func addImageTapped(){
+        self.pickerIsPresented = true
+    }
+    
+    //Removes an image from the new list of images to be uploaded
+    func deleteImage(img:UIImage){
+        
+        if let index = self.downloadedMedia.firstIndex(where:{ $0.imageLoader.downloadedImage == img}){
+            self.downloadedMedia.remove(at: index)
+            return
+        }
+        
+        if let index = self.uploadImages.firstIndex(where:{ $0 == img}){
+            self.uploadImages.remove(at: index)
+            return
+        }
+        
+    }
+    
+    //To be called when the picker finishes picking an image
+    func finishedPickingImage(){
+        
+        //REFACTOR so that it only adds new images
+        
+        //Add uploaded image tp upload list
+        
+        if let img = self.chosenImage{
+            self.uploadImages.append(img)
+        }
+        
+        //Dismiss Picker
+        
+        self.pickerIsPresented = false
+        
+    }
+    
+    //Returns a list of ui images for display within the view from the relevant list types
+    func displayUIImages() -> [UIImage]{
+        var images:[UIImage] = []
+        
+        for img in self.downloadedMedia{
+            if let uiimg = img.imageLoader.downloadedImage{
+                images.append(uiimg)
+            }
+        }
+        
+        for img in self.uploadImages{
+            images.append(img)
+        }
+        
+        return images
+    }
+    
+    //Loads images from a given item
+    func loadImages(item:Item){
+        
+        for img in item.images{
+            self.downloadedMedia.append(StorageImage(fullPath:img,height:100,contentMode:.fit))
+        }
+        
+    }
+    
+    //Returns an identifiable list from an array of a given type T for use within ForEach Loops or other dynamically generated views
+    func identifiableList<T>(array:[T]) -> [(T,UUID)]{
+        
+        var newList:[(T,UUID)] = []
+        
+        for e in array{
+            newList.append((e,UUID()))
+        }
+        
+        return newList
+    }
+    
+    //Sets the condition field based on a given condition from the list of conditions
+    func setCondtionPicker(itemCondtion:String){
+        self.conditionTag = self.conditions.firstIndex(of: itemCondtion) ?? 2
+    }
+    
+    
+    //Validation
+    
+    //Validates a given field based on the given typpe
+    func validateField(field:FieldType){
         switch(field){
-        case Field.title:
+        case FieldType.title:
             if(self.title.isEmpty){
                 self.titleValid = (false,ErrorType.emptyField)
             }
             else{
                 self.titleValid = (true,nil)
             }
-        case Field.condition:
+        case FieldType.condition:
             self.conditionsValid = (true,nil)
-        case Field.category:
+        case FieldType.category:
             if(self.category.isEmpty){
                 self.categoryValid = (false,ErrorType.emptyField)
             }
             else{
                 self.categoryValid = (true,nil)
             }
-        case Field.dailyPrice:
+        case FieldType.dailyPrice:
             let dailyPrice = Double(self.dailyPrice)
             if(self.dailyPrice.isEmpty){
                 self.dailyPriceValid = (false,ErrorType.emptyField)
@@ -358,7 +384,7 @@ struct ItemFunctions: View {
             else{
                 self.dailyPriceValid = (true,nil)
             }
-        case Field.availableQuantity:
+        case FieldType.availableQuantity:
             let quantity = Int(self.quantity)
             if(self.quantity.isEmpty){
                 self.quantityValid = (false,ErrorType.emptyField)
@@ -370,7 +396,7 @@ struct ItemFunctions: View {
             else{
                 self.quantityValid = (true,nil)
             }
-        case Field.pickUpLocation:
+        case FieldType.pickUpLocation:
             if(self.pickUpLocation.isEmpty){
                 self.pickUpLocationValid = (false,ErrorType.emptyField)
             }
@@ -378,7 +404,7 @@ struct ItemFunctions: View {
                 self.pickUpLocationValid = (true,nil)
             }
             
-        case Field.description:
+        case FieldType.description:
             if(self.description.isEmpty){
                 self.descriptionValid = (false,ErrorType.emptyField)
             }
@@ -390,12 +416,14 @@ struct ItemFunctions: View {
         }
     }
     
-    func validateList(list:[Field]){
+    //validates a list of fields from a given array of field types
+    func validateList(list:[FieldType]){
         for field in list{
             self.validateField(field: field)
         }
     }
     
+    //Returns true if all fields are valid
     func allFieldsValid() -> Bool{
         return
             (self.titleValid != nil && self.titleValid!.0
@@ -408,14 +436,20 @@ struct ItemFunctions: View {
         
     }
     
+    //Submits changes from the input form
     func submitChanges(){
-        self.validateList(list: [Field.title,Field.condition,Field.category,Field.dailyPrice,Field.pickUpLocation,Field.availableQuantity,Field.description])
+        
+        //Validates all fields within the list
+        self.validateList(list: [FieldType.title,FieldType.condition,FieldType.category,FieldType.dailyPrice,FieldType.pickUpLocation,FieldType.availableQuantity,FieldType.description])
         
         if(self.allFieldsValid()){
+            //Fields are valid
             if(itemFunction == ItemFunction.edit && self.item != nil){
+                //This modal edits items
                 
                 let updatedItem = Item(itemID: self.item!.itemID, sellerID: self.item!.sellerID, title: self.title, category: self.category, condition: self.conditions[self.conditionTag], dailyPrice: Double(self.dailyPrice) ?? 0, description: self.description, quantity: Int(self.quantity) ?? 0, pickUpLocation: self.pickUpLocation, images: [])
                 
+                //Updates item within Firebase
                 Session.shared.itemServices.updateItem(updatedItem: updatedItem) { (err) in
                     if let err = err{
                         self.viewRouter.presentAlert(alert: NativeAlert(alert: "Something Went Wrong", message: "Check your connection and try again", tip: nil, option1: ("Okay",nil), option2: nil))
@@ -427,10 +461,11 @@ struct ItemFunctions: View {
                 }
             }
             else if(itemFunction == ItemFunction.create){
-                
+                //This modal creates items
                 if let user = self.user{
                     let newItem = ItemSubmission(sellerID: user.userID, title: self.title, category: self.category, condition: self.conditions[self.conditionTag], dailyPrice: Double(self.dailyPrice) ?? 0, description: self.description, quantity: Int(self.quantity) ?? 0, pickUpLocation: self.pickUpLocation)
                     
+                    //Creates item within Firebase
                     Session.shared.itemServices.addItem(itemSub: newItem,completionHandler: {(err) in
                         if let err = err{
                             print(err)
@@ -442,20 +477,16 @@ struct ItemFunctions: View {
                     })
                 }
             }
-            //ADD alert
         }
         else{
-            print("Errror")
+            //Some fields are not valid
+            
+            //Present alert
+            print("Error: All fields are not valid")
         }
     }
     
-    /*
-    func dismissModal(){
-        self.modalIsVisible = false
-        self.modalContent = AnyView(EmptyView())
-    }
-    */
-    
+    //Returns error messages from a given error type
     func returnErrorMessage(error:ErrorType)->String?{
         if(error == ErrorType.emptyField){
             return "This field cannot be left empty"
@@ -471,7 +502,7 @@ struct ItemFunctions: View {
         }
     }
     
-    enum Field{
+    enum FieldType{
         case title
         case condition
         case category

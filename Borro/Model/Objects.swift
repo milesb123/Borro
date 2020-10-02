@@ -48,21 +48,9 @@ class Item:ObservableObject{
     
 }
 
-struct Borrow{
-    let borrowID:String
-    let userID:String
-    let itemID:String
-    let dateTimeBorrowed:String
-    let quantityBorrowed:Int
-    let status:String
-}
 
-struct Review{
-    let reviewID:String
-    let itemID:String
-    let fullName:String
-    let rating:String
-    let comment:String
+struct Category{
+    let category:String
 }
 
 struct Filter{

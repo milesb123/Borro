@@ -175,7 +175,6 @@
 		3D386DC3250E31600004245A /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
-				3D24201424F440F10079D32A /* Images */,
 				3D386DC4250E31BC0004245A /* Alert.swift */,
 				3D4D18052517978F00C249E7 /* Modal.swift */,
 			);
@@ -186,7 +185,6 @@
 			isa = PBXGroup;
 			children = (
 				3D488A9324E55FF20045B636 /* Objects.swift */,
-				3D60BBCC2525EF55003744B3 /* TestView.swift */,
 				3D980A8024ED45B100AC9030 /* Enums.swift */,
 				3D488A9524E5A35B0045B636 /* DummyData.swift */,
 				3D488A9724E5F4DE0045B636 /* Session.swift */,
@@ -197,15 +195,26 @@
 		3D488A9A24E5FE680045B636 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3D495E9025274FE700A3779C /* Under Construction */,
 				3D4D18182518078A00C249E7 /* User */,
 				3D67E6982507E75F009941CF /* Search */,
 				3D4D180F251806B200C249E7 /* Item */,
 				3D4D1819251807AE00C249E7 /* Profile */,
-				3D4D18222518084300C249E7 /* Settings */,
 				3D67E6972507E72B009941CF /* Mission Control */,
 				3D386DC3250E31600004245A /* SubViews */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		3D495E9025274FE700A3779C /* Under Construction */ = {
+			isa = PBXGroup;
+			children = (
+				3D4D18222518084300C249E7 /* Settings */,
+				3D60BBCC2525EF55003744B3 /* TestView.swift */,
+				3D67A52C24FA9DEF0045C11F /* NavigationView.swift */,
+				3D24201424F440F10079D32A /* Images */,
+			);
+			path = "Under Construction";
 			sourceTree = "<group>";
 		};
 		3D4D180F251806B200C249E7 /* Item */ = {
@@ -319,7 +328,6 @@
 		3D67E6972507E72B009941CF /* Mission Control */ = {
 			isa = PBXGroup;
 			children = (
-				3D67A52C24FA9DEF0045C11F /* NavigationView.swift */,
 				3D64C49824DEA675008D37FE /* ViewRouter.swift */,
 				3D64C49624DE9DB7008D37FE /* MotherView.swift */,
 			);
@@ -415,7 +423,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Miles Broomfield";
 				TargetAttributes = {
 					3D64C45824DDAA6F008D37FE = {
@@ -690,6 +698,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -750,6 +759,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

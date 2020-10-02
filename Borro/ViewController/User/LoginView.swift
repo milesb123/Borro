@@ -86,15 +86,24 @@ struct LoginView: View {
         .edgesIgnoringSafeArea(.top)
     }
 
+    private func inputField(placeholder:String, state: Binding<String>) -> some View{
+        return
+        VStack{
+            TextField(placeholder, text: state)
+            Rectangle()
+                .foregroundColor(Color.black)
+                .frame(height: 1)
+        }
+    }
     
-    func createAccountTapped(){
+    private func createAccountTapped(){
         self.viewRouter.presentModal(modalContent: AnyView(CreateUser()))
     }
     
-    func forgotPasswordTapped(){
+    private func forgotPasswordTapped(){
     }
     
-    func loginButtonTapped(){
+    private func loginButtonTapped(){
         self.disabled = true
         Session.shared.userServices.signIn(email: self.email, password: self.password) { (error) in
             if let error = error{
@@ -104,16 +113,6 @@ struct LoginView: View {
             else{
                 self.disabled = false
             }
-        }
-    }
-    
-    func inputField(placeholder:String, state: Binding<String>) -> some View{
-        return
-        VStack{
-            TextField(placeholder, text: state)
-            Rectangle()
-                .foregroundColor(Color.black)
-                .frame(height: 1)
         }
     }
     

@@ -11,9 +11,7 @@ import SwiftUI
 struct ResultDetail: View {
     
     @EnvironmentObject var viewRouter:ViewRouter
-    
-    @State var alertIsShown:Bool = false
-    
+        
     @State var item:Item
     @State var seller:User?
     
@@ -23,14 +21,15 @@ struct ResultDetail: View {
     @State private var modalContent:AnyView = AnyView(EmptyView())
     
     @State var stock:Int = 1
-    @State var distanceKm:Float = 0
     
     var body: some View {
-        ZStack{
         ScrollView(showsIndicators: false){
+            
             Spacer()
                 .frame(height:UIScreen.main.bounds.height*0.12)
+            
             VStack(spacing: 20){
+                //Title Section
                 HStack{
                     Text(item.title)
                         .font(.title)
@@ -39,6 +38,8 @@ struct ResultDetail: View {
                 }
                 
                 imageSection()
+                
+                //Overview Section
                 
                 HStack(alignment:.top){
                     VStack(alignment:.leading){
@@ -64,7 +65,11 @@ struct ResultDetail: View {
                     Spacer()
                 }
                 
+                //Borrow Button
+                
                 borrowButton()
+                
+                //Detailed Information Section
                 
                 VStack(alignment:.leading,spacing:10){
                     
@@ -79,15 +84,15 @@ struct ResultDetail: View {
                         Spacer()
                     }
                 }
-                
                 Spacer()
             }
             .padding()
             Spacer()
         }
         .background(Color.white)
-        
-        }
+        .navigationBarTitle(Text(item.title),displayMode: .inline)
+        .navigationBarHidden(false)
+        .edgesIgnoringSafeArea(.vertical)
         .onAppear{
             Session.shared.userServices.getUserByDocumentID(userID: self.item.sellerID) { (result) in
                 if let err = result.1{
@@ -98,9 +103,6 @@ struct ResultDetail: View {
                 }
             }
         }
-        .navigationBarTitle(Text(item.title),displayMode: .inline)
-        .navigationBarHidden(false)
-        .edgesIgnoringSafeArea(.vertical)
     }
     
     private func imageSection() -> some View{
@@ -120,43 +122,6 @@ struct ResultDetail: View {
         }
         .frame(height:200)
     }
-    
-    private func deleteItemTapped(){
-        //ADD PROMPT
-        Session.shared.itemServices.deleteItem(itemID: item.itemID) { (err) in
-            if let err = err{
-                self.alertIsShown = true
-                print(err)
-            }
-        }
-    }
-    
-    private func loadItem(){
-        Session.shared.itemServices.getItemByID(itemID: self.item.itemID) { (item, err) in
-            if let err = err{
-                print(err)
-            }
-            if let item = item{
-                self.item = item
-            }
-        }
-    }
-    
-    private func editItemTapped(){
-        self.dismissModal()
-        self.viewRouter.presentModal(modalContent: AnyView(ItemFunctions(itemFunction: ItemFunctions.ItemFunction.edit, dismissModal: self.dismissModal,item: self.item, user: nil)))
-    }
-    
-    private func borrowTapped(){
-        self.dismissModal()
-        self.viewRouter.presentModal(modalContent: AnyView(borrowItemModal()))
-    }
-    
-    private func dismissModal(){
-        self.viewRouter.dismissModal()
-        self.loadItem()
-    }
-    
     
     private func borrowItemModal() -> some View{
         return
@@ -266,11 +231,36 @@ struct ResultDetail: View {
         return anyView
     }
     
+    private func loadItem(){
+        Session.shared.itemServices.getItemByID(itemID: self.item.itemID) { (item, err) in
+            if let err = err{
+                print(err)
+            }
+            if let item = item{
+                self.item = item
+            }
+        }
+    }
+    
+    private func editItemTapped(){
+        self.dismissModal()
+        self.viewRouter.presentModal(modalContent: AnyView(ItemFunctions(itemFunction: ItemFunctions.ItemFunction.edit, dismissModal: self.dismissModal,item: self.item, user: nil)))
+    }
+    
+    private func borrowTapped(){
+        self.dismissModal()
+        self.viewRouter.presentModal(modalContent: AnyView(borrowItemModal()))
+    }
+    
+    private func dismissModal(){
+        self.viewRouter.dismissModal()
+        self.loadItem()
+    }
+    
 }
 
 struct ResultDetail_Previews: PreviewProvider {
     static var previews: some View {
-        //ResultDetail.EditItemModal(item: DummyData.items[0])
         ResultDetail(item: DummyData.items[1], isLocalUserItem: false)
     }
 }

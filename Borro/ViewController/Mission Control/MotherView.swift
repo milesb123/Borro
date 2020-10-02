@@ -34,7 +34,8 @@ struct MotherView: View {
                                     RootProfileView(userID: self.localUser!.userID)
                                 }
                         }
-                        //Spacer()
+                        
+                        //Navigation Bar
                         VStack(spacing:0){
                             HStack(spacing:10){
                                 Spacer()
@@ -60,9 +61,11 @@ struct MotherView: View {
                 .onReceive(Session.shared.$localUser) { (user) in
                     self.localUser = user
                 }
-
+                
+                //Modal
                 Modal()
                 
+                //Alert
                 if(self.viewRouter.alertShown){
                     self.viewRouter.alert
                     onAppear{

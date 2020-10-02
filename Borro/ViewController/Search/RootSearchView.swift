@@ -10,7 +10,7 @@ import SwiftUI
 
 struct RootSearchView: View {
     
-    @State var searchSubmission:SearchSubmission?
+    @State private var searchSubmission:SearchSubmission?
     @State var searchField:String = ""
     @State var results:[Item] = []
     
@@ -50,10 +50,9 @@ struct RootSearchView: View {
         return
         VStack{
             Spacer()
-                //.frame(height:20)
             HStack{
                 TextField("Search Here", text: $searchField,onCommit: {
-                        self.didCommit(searchSubmission: SearchSubmission(text: self.searchField, filters: []))
+                        self.didCommitSearch(searchSubmission: SearchSubmission(text: self.searchField, filters: []))
                 })
                     .font(.subheadline)
                 Image(systemName: "magnifyingglass")
@@ -76,7 +75,7 @@ struct RootSearchView: View {
         .frame(height:self.searchBarSpace)
     }
     
-    func searchTrayButton(text:String, action:@escaping()->Void) -> some View{
+    private func searchTrayButton(text:String, action:@escaping()->Void) -> some View{
         return
             Button(action:{action()}){
                 Rectangle()
@@ -86,7 +85,7 @@ struct RootSearchView: View {
             }
     }
     
-    func didCommit(searchSubmission:SearchSubmission){
+    private func didCommitSearch(searchSubmission:SearchSubmission){
         Session.shared.itemServices.getAllItems { optionalItems,err in
             if let err = err{
                 print(err)
@@ -97,7 +96,7 @@ struct RootSearchView: View {
         }
     }
     
-    struct SearchSubmission{
+    private struct SearchSubmission{
         
         let text:String
         let filters:[Filter]

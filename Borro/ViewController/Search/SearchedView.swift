@@ -15,43 +15,50 @@ struct SearchedView: View {
     
     var body: some View {
         VStack(spacing:0){
-            VStack(spacing:0){
-                if(!self.results.isEmpty){
-                    HStack{
-                        VStack(alignment: .leading,spacing:5){
-                            Text("\(results.count) Displayed")
-                                .font(.subheadline)
-                                .fontWeight(.light)
-                                .foregroundColor(Color("Teal"))
-                        }
-                        Spacer()
+            if(!self.results.isEmpty){
+                //Search Overview
+                HStack{
+                    VStack(alignment: .leading,spacing:5){
+                        Text("\(results.count) Displayed")
+                            .font(.subheadline)
+                            .fontWeight(.light)
+                            .foregroundColor(Color("Teal"))
                     }
-                    .padding(.vertical)
-                    ScrollView{
-                        ForEach(results, id: \.itemID){result in
-                            NavigationLink(destination:
-                                ResultDetail(item: result, isLocalUserItem: Session.shared.userServices.userIsLocal(userID: result.sellerID))
-                                        .navigationBarTitle(Text(result.title),displayMode:.inline)
-                                        .navigationBarHidden(false)
-                            ){
-                                SearchResultRow(item: result)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                        }
-                        Spacer()
-                    }
+                    Spacer()
                 }
-                else{
+                .padding(.vertical)
+                //Search List
+                ScrollView{
+                    ForEach(results, id: \.itemID){result in
+                        NavigationLink(destination:
+                            ResultDetail(item: result, isLocalUserItem: Session.shared.userServices.userIsLocal(userID: result.sellerID))
+                                    .navigationBarTitle(Text(result.title),displayMode:.inline)
+                                    .navigationBarHidden(false)
+                        ){
+                            SearchResultRow(item: result)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                     Spacer()
                 }
             }
-            .padding(.horizontal)
+            else{
+                Text("No results found for \"\(self.searchField)\"")
+                    .font(.subheadline)
+                    .fontWeight(.light)
+                    .foregroundColor(Color.black)
+                    .fixedSize(horizontal: false, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                    .padding()
+                Spacer()
+            }
         }
+        .padding(.horizontal)
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }
     
     private func resultNumberText(count:Int) -> Text{
+        //Corrects Grammar
         
         var string = ""
         
@@ -77,9 +84,8 @@ struct SearchResultRow:View{
         VStack{
             VStack(spacing:10){
                 if(false){
-                    /*
-                    StorageImage(fullPath: item.images[0], cornerRadius: 0, height: UIScreen.main.bounds.height*0.25)
-                    */
+                    //StorageImage(fullPath: item.images[0], cornerRadius: 0, height: UIScreen.main.bounds.height*0.25)
+                    
                 }
                 else{
                     Rectangle()
@@ -105,9 +111,6 @@ struct SearchResultRow:View{
                 }
                 Spacer()
             }
-        }
-        .onAppear{
-            Session.shared.distanceFromItem(itemID: self.item.itemID, distance: &self.distance)
         }
     }
     
