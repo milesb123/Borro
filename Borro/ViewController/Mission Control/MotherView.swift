@@ -13,6 +13,7 @@ struct MotherView: View {
     @EnvironmentObject var viewRouter:ViewRouter
     @State var navBarHidden = true
     @State var localUser:User?
+    @State var currentContainerView:AnyView = AnyView(EmptyView())
 
     var body: some View {
         GeometryReader { geometry in
@@ -22,37 +23,27 @@ struct MotherView: View {
                         VStack(spacing:0){
                             //Content
                             VStack{
-                                if(self.viewRouter.currentTab == 0){
-                                    NavigationView{
-                                        RootSearchView()
-                                            .navigationBarTitle("")
-                                            .navigationBarHidden(true)
-                                    }
-                                    .accentColor(Color("Teal"))
-                                }
-                                else if(self.viewRouter.currentTab == 1){
-                                    RootProfileView(userID: self.localUser!.userID)
-                                }
-                        }
-                        
-                        //Navigation Bar
-                        VStack(spacing:0){
-                            HStack(spacing:10){
-                                Spacer()
-                                self.viewTab(thisView: 0)
-                                Spacer()
-                                self.viewTab(thisView: 1)
-                                Spacer()
-                                    
+                                self.currentContainerView
                             }
-                            .padding(.vertical)
-                            .padding(.bottom)
+                        
+                            //Navigation Bar
+                            VStack(spacing:0){
+                                HStack(spacing:10){
+                                    Spacer()
+                                    self.viewTab(thisView: 0)
+                                    Spacer()
+                                    self.viewTab(thisView: 1)
+                                    Spacer()
+                                        
+                                }
+                                .padding(.vertical)
+                                .padding(.bottom)
+                            }
+                            .frame(width: geometry.size.width,height:geometry.size.height/10)
+                            .foregroundColor(Color.white)
+                            .background(Color.white.shadow(radius: 2))
                         }
-                        .frame(width: geometry.size.width,height:geometry.size.height/10)
-                        .foregroundColor(Color.white)
-                        .background(Color.white.shadow(radius: 2))
-                    }
-                    .edgesIgnoringSafeArea(.bottom)
+                        .edgesIgnoringSafeArea(.bottom)
                     }
                     else{
                         LoginView()
@@ -73,7 +64,31 @@ struct MotherView: View {
                     }
                 }
             }
+            .onReceive(self.viewRouter.$currentTab, perform: { tab in
+                if(tab == 0){
+                    self.currentContainerView = AnyView(self.rootSearchView())
+                }
+                else if(tab == 1){
+                    self.currentContainerView = AnyView(self.rootProfileView())
+                }
+            })
         }
+    }
+    
+    func rootSearchView() -> some View{
+        
+        return
+        NavigationView{
+            RootSearchView()
+                .navigationBarTitle("")
+                .navigationBarHidden(true)
+        }
+        .accentColor(Color("Teal"))
+    }
+    
+    func rootProfileView() -> some View{
+        return RootProfileView(userID: self.localUser!.userID)
+        
     }
     
     func viewTab(thisView:Int) -> some View{

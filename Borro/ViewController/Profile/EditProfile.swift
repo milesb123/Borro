@@ -53,7 +53,7 @@ struct EditProfile: View {
                                 .clipShape(Circle())
                                 .frame(width:180,height:180)
                         }
-                        else if(user.image != nil){
+                        else if(false){
                             StorageImage(fullPath: user.image, width: 180, height: 180)
                                 .clipShape(Circle())
                                 // Replace second unwrap with uiimage loaded from assets, as this unwrap is unsafe

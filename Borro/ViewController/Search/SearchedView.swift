@@ -11,15 +11,15 @@ import SwiftUI
 struct SearchedView: View {
     
     @Binding var searchField:String
-    @Binding var results:[Item]
+    @Binding var results:[Item]?
     
     var body: some View {
         VStack(spacing:0){
-            if(!self.results.isEmpty){
+            if(self.results != nil && !self.results!.isEmpty){
                 //Search Overview
                 HStack{
                     VStack(alignment: .leading,spacing:5){
-                        Text("\(results.count) Displayed")
+                        Text("\(results!.count) Displayed")
                             .font(.subheadline)
                             .fontWeight(.light)
                             .foregroundColor(Color("Teal"))
@@ -29,7 +29,7 @@ struct SearchedView: View {
                 .padding(.vertical)
                 //Search List
                 ScrollView{
-                    ForEach(results, id: \.itemID){result in
+                    ForEach(results!, id: \.itemID){result in
                         NavigationLink(destination:
                             ResultDetail(item: result, isLocalUserItem: Session.shared.userServices.userIsLocal(userID: result.sellerID))
                                     .navigationBarTitle(Text(result.title),displayMode:.inline)
@@ -42,8 +42,17 @@ struct SearchedView: View {
                     Spacer()
                 }
             }
-            else{
+            else if(self.results != nil && self.results!.isEmpty){
                 Text("No results found for \"\(self.searchField)\"")
+                    .font(.subheadline)
+                    .fontWeight(.light)
+                    .foregroundColor(Color.black)
+                    .fixedSize(horizontal: false, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+                    .padding()
+                Spacer()
+            }
+            else{
+                Text("Loading...")
                     .font(.subheadline)
                     .fontWeight(.light)
                     .foregroundColor(Color.black)

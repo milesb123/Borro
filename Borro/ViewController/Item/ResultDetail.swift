@@ -26,9 +26,11 @@ struct ResultDetail: View {
         ScrollView(showsIndicators: false){
             
             Spacer()
-                .frame(height:UIScreen.main.bounds.height*0.12)
+                .frame(height:UIScreen.main.bounds.height*0.1)
             
             VStack(spacing: 20){
+                imageSection()
+                
                 //Title Section
                 HStack{
                     Text(item.title)
@@ -37,10 +39,7 @@ struct ResultDetail: View {
                     Spacer()
                 }
                 
-                imageSection()
-                
                 //Overview Section
-                
                 HStack(alignment:.top){
                     VStack(alignment:.leading){
                         Text(item.category)

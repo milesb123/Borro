@@ -12,7 +12,7 @@ struct RootSearchView: View {
     
     @State private var searchSubmission:SearchSubmission?
     @State var searchField:String = ""
-    @State var results:[Item] = []
+    @State var results:[Item]? = []
     
     @State var searchBarSpace:CGFloat = UIScreen.main.bounds.height*0.15
     
@@ -27,6 +27,7 @@ struct RootSearchView: View {
                             SearchHomeView()
                                 .onAppear{
                                     self.searchBarSpace = UIScreen.main.bounds.height*0.15
+                                    self.results = nil
                                 }
                         }
                         else{
