@@ -25,7 +25,7 @@ class Item:ObservableObject{
     let itemID:String
     let sellerID:String
     let title:String
-    let category:String
+    let categories:[String]
     let condition:String
     let dailyPrice:Double
     let description:String
@@ -33,11 +33,11 @@ class Item:ObservableObject{
     let pickUpLocation:String
     let images:[String]
     
-    init(itemID:String,sellerID:String,title:String,category:String,condition:String,dailyPrice:Double,description:String,quantity:Int,pickUpLocation:String,images:[String]){
+    init(itemID:String,sellerID:String,title:String,categories:[String],condition:String,dailyPrice:Double,description:String,quantity:Int,pickUpLocation:String,images:[String]){
         self.itemID = itemID
         self.sellerID = sellerID
         self.title = title
-        self.category = category
+        self.categories = categories
         self.condition = condition
         self.dailyPrice = dailyPrice
         self.description = description
@@ -68,7 +68,7 @@ struct Search{
 struct ItemSubmission{
     let sellerID:String
     let title:String
-    let category:String
+    let categories:[String]
     let condition:String
     let dailyPrice:Double
     let description:String
@@ -86,3 +86,6 @@ struct UserSubmission{
     let sellerBio:String
 }
 
+struct Categories{
+    static var categories:[String] = ["Animals and Pet Supplies","Apparel and Accessories","Arts and Entertainment","Baby and Toddler","Business and Industrial","Camera and Optics","Electronics","Food, Beverages and Tobacco","Furniture","Hardware and Tools","Health and Beauty","Home and Garden","Mature","Media","Office Supplies","Software","Sporting Goods","Toys and Games","Vehicles and Parts"]
+}

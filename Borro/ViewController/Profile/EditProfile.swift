@@ -29,7 +29,7 @@ struct EditProfile: View {
                         .font(.title)
                         .fontWeight(.bold)
                     Spacer()
-                    Button(action:{self.dismissModal()}){Image(systemName:"xmark.circle.fill").resizable().frame(width:40,height:40).foregroundColor(Color("Teal"))}
+                    Button(action:{self.dismissModal()}){Image(systemName:"xmark.circle.fill").resizable().frame(width:30,height:30).foregroundColor(Color("Teal"))}
                 }
                 HStack{
                     Text("Use the sections below to edit your profile and tap submit to save your changes")

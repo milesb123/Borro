@@ -25,6 +25,7 @@ struct ItemFunctions: View {
     @State var titleValid:(Bool,ErrorType?)?
     
     @State var category:String = ""
+    @State var addedCategories:[String] = []
     @State var categoryValid:(Bool,ErrorType?)?
     
     @State var conditionTag:Int = 0
@@ -63,7 +64,7 @@ struct ItemFunctions: View {
                 }
                 
                 Spacer()
-                Button(action:{self.dismissModal()}){Image(systemName:"xmark.circle.fill").resizable().frame(width:40,height:40).foregroundColor(Color("Teal"))}
+                Button(action:{self.dismissModal()}){Image(systemName:"xmark.circle.fill").resizable().frame(width:30,height:30).foregroundColor(Color("Teal"))}
             }
             ScrollView{
                 VStack(alignment: .leading,spacing:20){
@@ -87,12 +88,12 @@ struct ItemFunctions: View {
                         Text("Images")
                             .font(.headline)
                             .fontWeight(.bold)
-                        ScrollView(.horizontal, showsIndicators: true){
+                        ScrollView(.horizontal, showsIndicators: false){
                             HStack{
                                 if(self.uploadImages.isEmpty){
                                     if(itemFunction == ItemFunction.edit){
                                         if(self.item != nil && !self.item!.images.isEmpty){
-                                            ForEach((self.identifiableList(array:self.downloadedMedia)), id: \.self.1){img in
+                                            ForEach((HelperFunctions.identifiableList(array:self.downloadedMedia)), id: \.self.1){img in
                                                 
                                                 ZStack{
                                                     VStack{
@@ -127,7 +128,7 @@ struct ItemFunctions: View {
                                 }
                                 else{
                                     if(self.item != nil){
-                                        ForEach((self.identifiableList(array: [])), id: \.self.1){img in
+                                        ForEach((HelperFunctions.identifiableList(array: [])), id: \.self.1){img in
                                             ZStack{
                                                 VStack{
                                                     Image(uiImage: img.0 as! UIImage)
@@ -183,12 +184,15 @@ struct ItemFunctions: View {
                             .foregroundColor(Color.gray)
                     }
                     
+                    categorySection()
+                    
                     //Simple Fields
-                    field(title: "Category", placeholderText: "Select the category of the item", bindingValue: $category, validationBinding: $categoryValid,completionHandler: {self.validateField(field: FieldType.category)})
-                    field(title: "Daily Price", placeholderText: "Price per day", bindingValue: $dailyPrice, validationBinding: $dailyPriceValid,helperText: "Enter the price it would cost someone to borrow your item per day",keyboardType:.numberPad,currency: "£",completionHandler: {self.validateField(field: FieldType.dailyPrice)})
-                    field(title: "Available Quantity", placeholderText: "Enter quantity", bindingValue: $quantity, validationBinding: $quantityValid,keyboardType: .numberPad){self.validateField(field: FieldType.availableQuantity)}
-                    field(title: "Description", placeholderText: "Enter a description", bindingValue: $description, validationBinding: $descriptionValid, completionHandler: {self.validateField(field: FieldType.description)})
-                    field(title:"Pick Up Location",placeholderText: "Enter pickup location",bindingValue: $pickUpLocation, validationBinding: $pickUpLocationValid,helperText: "Enter the location a customer should pick up the item from, read our safety guidlines here",completionHandler: {self.validateField(field: FieldType.pickUpLocation)})
+                    Group{
+                        field(title: "Daily Price", placeholderText: "Price per day", bindingValue: $dailyPrice, validationBinding: $dailyPriceValid,helperText: "Enter the price it would cost someone to borrow your item per day",keyboardType:.numberPad,currency: "£",completionHandler: {self.validateField(field: FieldType.dailyPrice)})
+                        field(title: "Available Quantity", placeholderText: "Enter quantity", bindingValue: $quantity, validationBinding: $quantityValid,keyboardType: .numberPad){self.validateField(field: FieldType.availableQuantity)}
+                        field(title: "Description", placeholderText: "Enter a description", bindingValue: $description, validationBinding: $descriptionValid, completionHandler: {self.validateField(field: FieldType.description)})
+                        field(title:"Pick Up Location",placeholderText: "Enter pickup location",bindingValue: $pickUpLocation, validationBinding: $pickUpLocationValid,helperText: "Enter the location a customer should pick up the item from, read our safety guidlines here",completionHandler: {self.validateField(field: FieldType.pickUpLocation)})
+                    }
                 }
                 //Submit Button
                 Button(action:{self.submitChanges()}){Capsule().frame(width:150,height:50).foregroundColor(Color("Teal")).overlay(Text("Submit").font(.headline).fontWeight(.bold).foregroundColor(Color.white))}.padding()
@@ -202,7 +206,8 @@ struct ItemFunctions: View {
         .onAppear{
             if(self.itemFunction == ItemFunction.edit && self.item != nil){
                 self.title = self.item!.title
-                self.category = self.item!.category
+                self.category = ""
+                self.addedCategories = self.item!.categories
                 self.setCondtionPicker(itemCondtion: self.item!.condition)
                 self.dailyPrice = self.item!.dailyPrice.description
                 self.description = self.item!.description
@@ -214,6 +219,60 @@ struct ItemFunctions: View {
         .sheet(isPresented: $pickerIsPresented, content: {
             ImagePicker(image: $chosenImage, onFinishedPicking: self.finishedPickingImage)
         })
+    }
+    
+    func categorySection() -> some View{
+        return
+        VStack(alignment:.leading){
+            Text("Category")
+                .font(.headline)
+                .fontWeight(.bold)
+                .font(.subheadline)
+            DropdownMenuTypable(textField: $category, onAdd: self.addCategorytoList)
+                .animation(.easeInOut)
+                //Adds error message
+            if (self.categoryValid != nil && self.categoryValid!.1 != nil && !self.categoryValid!.0){
+                Text(self.returnErrorMessage(error: self.categoryValid!.1!) ?? "")
+                    .foregroundColor(Color.red)
+                    .font(.subheadline)
+                    .fontWeight(.light)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            else if (self.categoryValid != nil && self.categoryValid!.1 != nil && self.categoryValid!.0){
+                Text(self.returnErrorMessage(error: self.categoryValid!.1!) ?? "")
+                    .foregroundColor(Color.yellow)
+                    .font(.subheadline)
+                    .fontWeight(.light)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Text("Add up to 5 keywords or categories, categories from the list are more popular however you can add your own too")
+                .foregroundColor(Color.gray)
+                .font(.subheadline)
+                .fontWeight(.light)
+                .fixedSize(horizontal: false, vertical: true)
+            ScrollView(.horizontal){
+                HStack{
+                    ForEach((HelperFunctions.identifiableList(array: addedCategories)),id: \.1){category in
+                        HStack(spacing:10){
+                            Text("\(category.0) ")
+                                .foregroundColor(Color.white)
+                                .font(.caption)
+                                .fontWeight(.light)
+                            Button(action:{
+                                self.deleteCategory(category: category.0)
+                            }){
+                            Image(systemName: "xmark")
+                                .resizable()
+                                .frame(width:8,height:8)
+                                .foregroundColor(Color.white)
+                            }
+                        }
+                        .padding(8)
+                        .background(Color("Teal"))
+                    }
+                }
+            }
+        }
     }
     
     //Returns a field view
@@ -249,16 +308,8 @@ struct ItemFunctions: View {
                 }
                 
                 Rectangle()
-                    .frame(height:0.5)
+                    .frame(height:1)
                 
-                //Adds helper text
-                if (helperText != nil){
-                    Text(helperText!)
-                        .foregroundColor(Color.gray)
-                        .font(.subheadline)
-                        .fontWeight(.light)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
                 //Adds error message
                 if (validationBinding.wrappedValue != nil && validationBinding.wrappedValue!.1 != nil){
                     Text(self.returnErrorMessage(error: validationBinding.wrappedValue!.1!) ?? "")
@@ -267,6 +318,37 @@ struct ItemFunctions: View {
                         .fontWeight(.light)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                //Adds helper text
+                if (helperText != nil){
+                    Text(helperText!)
+                        .foregroundColor(Color.gray)
+                        .font(.subheadline)
+                        .fontWeight(.light)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+        }
+    }
+    
+    //Categories
+    
+    func addCategorytoList() -> Void{
+        if(!self.category.isEmpty){
+            if(self.addedCategories.contains(self.category)){
+                self.categoryValid = (true,ErrorType.categoryAlreadyExists)
+            }
+            else{
+                if(self.addedCategories.count<5){
+                    self.addedCategories.append(self.category)
+                }
+                self.validateField(field: .category)
+            }
+            self.category = ""
+        }
+    }
+    
+    func deleteCategory(category:String){
+        if let categoryIndex = self.addedCategories.firstIndex(where: {$0 == category}){
+            self.addedCategories.remove(at: categoryIndex)
         }
     }
     
@@ -334,18 +416,6 @@ struct ItemFunctions: View {
         
     }
     
-    //Returns an identifiable list from an array of a given type T for use within ForEach Loops or other dynamically generated views
-    func identifiableList<T>(array:[T]) -> [(T,UUID)]{
-        
-        var newList:[(T,UUID)] = []
-        
-        for e in array{
-            newList.append((e,UUID()))
-        }
-        
-        return newList
-    }
-    
     //Sets the condition field based on a given condition from the list of conditions
     func setCondtionPicker(itemCondtion:String){
         self.conditionTag = self.conditions.firstIndex(of: itemCondtion) ?? 2
@@ -367,8 +437,18 @@ struct ItemFunctions: View {
         case FieldType.condition:
             self.conditionsValid = (true,nil)
         case FieldType.category:
-            if(self.category.isEmpty){
+            //ORDER OF EXECUTION MATTERS
+            //Categories can't be empty
+            //You cannot add a category that has already been selected
+            //You cannot exceed more than 5 categories
+            if(self.addedCategories.isEmpty){
                 self.categoryValid = (false,ErrorType.emptyField)
+            }
+            else if(self.addedCategories.count == 5){
+                self.categoryValid = (true,ErrorType.tooManyCategoriesSelected)
+            }
+            else if(self.addedCategories.count > 5){
+                self.categoryValid = (false,ErrorType.tooManyCategoriesSelected)
             }
             else{
                 self.categoryValid = (true,nil)
@@ -447,7 +527,7 @@ struct ItemFunctions: View {
             if(itemFunction == ItemFunction.edit && self.item != nil){
                 //This modal edits items
                 
-                let updatedItem = Item(itemID: self.item!.itemID, sellerID: self.item!.sellerID, title: self.title, category: self.category, condition: self.conditions[self.conditionTag], dailyPrice: Double(self.dailyPrice) ?? 0, description: self.description, quantity: Int(self.quantity) ?? 0, pickUpLocation: self.pickUpLocation, images: [])
+                let updatedItem = Item(itemID: self.item!.itemID, sellerID: self.item!.sellerID, title: self.title, categories: self.addedCategories, condition: self.conditions[self.conditionTag], dailyPrice: Double(self.dailyPrice) ?? 0, description: self.description, quantity: Int(self.quantity) ?? 0, pickUpLocation: self.pickUpLocation, images: [])
                 
                 //Updates item within Firebase
                 Session.shared.itemServices.updateItem(updatedItem: updatedItem) { (err) in
@@ -463,7 +543,7 @@ struct ItemFunctions: View {
             else if(itemFunction == ItemFunction.create){
                 //This modal creates items
                 if let user = self.user{
-                    let newItem = ItemSubmission(sellerID: user.userID, title: self.title, category: self.category, condition: self.conditions[self.conditionTag], dailyPrice: Double(self.dailyPrice) ?? 0, description: self.description, quantity: Int(self.quantity) ?? 0, pickUpLocation: self.pickUpLocation)
+                    let newItem = ItemSubmission(sellerID: user.userID, title: self.title, categories: self.addedCategories, condition: self.conditions[self.conditionTag], dailyPrice: Double(self.dailyPrice) ?? 0, description: self.description, quantity: Int(self.quantity) ?? 0, pickUpLocation: self.pickUpLocation)
                     
                     //Creates item within Firebase
                     Session.shared.itemServices.addItem(itemSub: newItem,completionHandler: {(err) in
@@ -497,6 +577,12 @@ struct ItemFunctions: View {
         else if(error == ErrorType.invalidInputRequiresPositiveIntegers){
             return "Invalid input, please enter whole numbers above 0 only"
         }
+        else if(error == ErrorType.categoryAlreadyExists){
+            return "You have already selected this category"
+        }
+        else if(error == ErrorType.tooManyCategoriesSelected){
+            return "You cannot exceed 5 categories"
+        }
         else{
             return nil
         }
@@ -516,6 +602,8 @@ struct ItemFunctions: View {
         case emptyField
         case invalidInputRequiresPositiveNumbers
         case invalidInputRequiresPositiveIntegers
+        case tooManyCategoriesSelected
+        case categoryAlreadyExists
     }
     
     enum ItemFunction{

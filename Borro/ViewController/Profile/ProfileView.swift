@@ -266,7 +266,7 @@ struct ProfileView: View {
                                 Text("\(item.title)")
                                     .font(.headline)
                                     .fontWeight(.bold)
-                                Text("\(item.category)")
+                                Text("\(item.categories[0])")
                                     .font(.subheadline)
                                     .fontWeight(.light)
                             }

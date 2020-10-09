@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D1CEE74252F791100D5D845 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1CEE73252F791100D5D845 /* HelperFunctions.swift */; };
+		3D1CEE7C253060FD00D5D845 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1CEE7B253060FD00D5D845 /* TestView.swift */; };
 		3D24201124F060BD0079D32A /* StorageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D24201024F060BD0079D32A /* StorageTest.swift */; };
 		3D24201324F07B380079D32A /* StorageImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D24201224F07B380079D32A /* StorageImage.swift */; };
 		3D24201824F4413C0079D32A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D24201724F4413C0079D32A /* LoginView.swift */; };
@@ -19,7 +21,7 @@
 		3D4D18112518070600C249E7 /* ItemFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4D18102518070600C249E7 /* ItemFunctions.swift */; };
 		3D4D181B251807C900C249E7 /* EditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4D181A251807C900C249E7 /* EditProfile.swift */; };
 		3D4D18242518090000C249E7 /* CreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4D18232518090000C249E7 /* CreateUser.swift */; };
-		3D60BBCD2525EF55003744B3 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D60BBCC2525EF55003744B3 /* TestView.swift */; };
+		3D60BBCD2525EF55003744B3 /* DropdownMenuTypable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D60BBCC2525EF55003744B3 /* DropdownMenuTypable.swift */; };
 		3D60BBD22525FF9F003744B3 /* SearchHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D60BBD12525FF9F003744B3 /* SearchHomeView.swift */; };
 		3D64C45D24DDAA6F008D37FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C45C24DDAA6F008D37FE /* AppDelegate.swift */; };
 		3D64C45F24DDAA6F008D37FE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D64C45E24DDAA6F008D37FE /* SceneDelegate.swift */; };
@@ -70,6 +72,8 @@
 		0786C53A86B09004FA643845 /* Pods_Borro_BorroUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Borro_BorroUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14CC5F0522947B6846EC674B /* Pods_Borro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Borro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A90214695AAC1578CF5F30A /* Pods_BorroTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BorroTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D1CEE73252F791100D5D845 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		3D1CEE7B253060FD00D5D845 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		3D24201024F060BD0079D32A /* StorageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageTest.swift; sourceTree = "<group>"; };
 		3D24201224F07B380079D32A /* StorageImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageImage.swift; sourceTree = "<group>"; };
 		3D24201724F4413C0079D32A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -82,7 +86,7 @@
 		3D4D18102518070600C249E7 /* ItemFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFunctions.swift; sourceTree = "<group>"; };
 		3D4D181A251807C900C249E7 /* EditProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfile.swift; sourceTree = "<group>"; };
 		3D4D18232518090000C249E7 /* CreateUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUser.swift; sourceTree = "<group>"; };
-		3D60BBCC2525EF55003744B3 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		3D60BBCC2525EF55003744B3 /* DropdownMenuTypable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownMenuTypable.swift; sourceTree = "<group>"; };
 		3D60BBD12525FF9F003744B3 /* SearchHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeView.swift; sourceTree = "<group>"; };
 		3D64C45924DDAA6F008D37FE /* Borro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Borro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D64C45C24DDAA6F008D37FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -160,6 +164,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		3D1CEE72252F78F900D5D845 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				3D1CEE73252F791100D5D845 /* HelperFunctions.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		3D24201424F440F10079D32A /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,7 +222,8 @@
 			isa = PBXGroup;
 			children = (
 				3D4D18222518084300C249E7 /* Settings */,
-				3D60BBCC2525EF55003744B3 /* TestView.swift */,
+				3D60BBCC2525EF55003744B3 /* DropdownMenuTypable.swift */,
+				3D1CEE7B253060FD00D5D845 /* TestView.swift */,
 				3D67A52C24FA9DEF0045C11F /* NavigationView.swift */,
 				3D24201424F440F10079D32A /* Images */,
 			);
@@ -288,6 +301,7 @@
 			children = (
 				3D64C45C24DDAA6F008D37FE /* AppDelegate.swift */,
 				3D64C45E24DDAA6F008D37FE /* SceneDelegate.swift */,
+				3D1CEE72252F78F900D5D845 /* Utilities */,
 				3D488A9924E5FE550045B636 /* Model */,
 				3D488A9A24E5FE680045B636 /* ViewController */,
 				3D64C46224DDAA71008D37FE /* Assets.xcassets */,
@@ -597,11 +611,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D60BBCD2525EF55003744B3 /* TestView.swift in Sources */,
+				3D1CEE7C253060FD00D5D845 /* TestView.swift in Sources */,
+				3D60BBCD2525EF55003744B3 /* DropdownMenuTypable.swift in Sources */,
 				3D24201324F07B380079D32A /* StorageImage.swift in Sources */,
 				3D67A52D24FA9DEF0045C11F /* NavigationView.swift in Sources */,
 				3DABDE0E24EDA22B00394DC8 /* ImageTest.swift in Sources */,
 				3D64C45D24DDAA6F008D37FE /* AppDelegate.swift in Sources */,
+				3D1CEE74252F791100D5D845 /* HelperFunctions.swift in Sources */,
 				3D64C45F24DDAA6F008D37FE /* SceneDelegate.swift in Sources */,
 				3D64C48F24DDAF64008D37FE /* SearchedView.swift in Sources */,
 				3D4D18112518070600C249E7 /* ItemFunctions.swift in Sources */,

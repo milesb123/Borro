@@ -22,7 +22,7 @@ enum itemsFirebase:String{
     
     case description
     
-    case category
+    case categories
     
     case avQuantity
     

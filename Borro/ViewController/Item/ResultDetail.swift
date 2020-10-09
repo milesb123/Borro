@@ -42,7 +42,7 @@ struct ResultDetail: View {
                 //Overview Section
                 HStack(alignment:.top){
                     VStack(alignment:.leading){
-                        Text(item.category)
+                        Text(item.categories[0])
                             .font(.caption)
                             .fontWeight(.light)
                             .underline()

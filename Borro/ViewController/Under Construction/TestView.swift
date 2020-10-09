@@ -2,7 +2,7 @@
 //  TestView.swift
 //  Borro
 //
-//  Created by Miles Broomfield on 01/10/2020.
+//  Created by Miles Broomfield on 09/10/2020.
 //  Copyright © 2020 Miles Broomfield. All rights reserved.
 //
 
@@ -10,10 +10,20 @@ import SwiftUI
 
 struct TestView: View {
     
-    var session = Session.shared
+    @State var height:CGFloat = 400
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            Rectangle()
+                .foregroundColor(.blue)
+                .onTapGesture(perform: {
+                    height += 50
+                })
+                .frame(height:height)
+                .opacity(0.5)
+            Rectangle()
+                .foregroundColor(.red)
+        }
     }
 }
 

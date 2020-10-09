@@ -308,7 +308,7 @@ class ItemServices{
         }
 
         
-        let item  = Item(itemID: docID, sellerID: data[itemsFirebase.sellerID.rawValue] as! String, title: data[itemsFirebase.title.rawValue] as! String, category: data[itemsFirebase.category.rawValue] as! String, condition: data[itemsFirebase.condition.rawValue] as! String, dailyPrice: data[itemsFirebase.dailyPrice.rawValue] as! Double, description: data[itemsFirebase.description.rawValue] as! String, quantity: data[itemsFirebase.avQuantity.rawValue] as! Int, pickUpLocation: data[itemsFirebase.pickUpLocation.rawValue] as! String? ?? "", images: imagePaths)
+        let item  = Item(itemID: docID, sellerID: data[itemsFirebase.sellerID.rawValue] as! String, title: data[itemsFirebase.title.rawValue] as! String, categories: data[itemsFirebase.categories.rawValue] as! NSArray as! [String], condition: data[itemsFirebase.condition.rawValue] as! String, dailyPrice: data[itemsFirebase.dailyPrice.rawValue] as! Double, description: data[itemsFirebase.description.rawValue] as! String, quantity: data[itemsFirebase.avQuantity.rawValue] as! Int, pickUpLocation: data[itemsFirebase.pickUpLocation.rawValue] as! String? ?? "", images: imagePaths)
         
         return item
         
@@ -376,7 +376,7 @@ class ItemServices{
         
         let item = [itemsFirebase.sellerID.rawValue:itemSub.sellerID,
                     itemsFirebase.title.rawValue:itemSub.title,
-                    itemsFirebase.category.rawValue:itemSub.category,
+                    itemsFirebase.categories.rawValue:itemSub.categories,
                     itemsFirebase.condition.rawValue:itemSub.condition,
                     itemsFirebase.description.rawValue:itemSub.description,
                     itemsFirebase.dailyPrice.rawValue:itemSub.dailyPrice,
@@ -402,7 +402,7 @@ class ItemServices{
     func updateItem(updatedItem:Item,completionHandler: @escaping (Error?) -> Void){
         let item = [itemsFirebase.sellerID.rawValue:updatedItem.sellerID,
                     itemsFirebase.title.rawValue:updatedItem.title,
-                    itemsFirebase.category.rawValue:updatedItem.category,
+                    itemsFirebase.categories.rawValue:updatedItem.categories,
                     itemsFirebase.condition.rawValue:updatedItem.condition,
                     itemsFirebase.description.rawValue:updatedItem.description,
                     itemsFirebase.dailyPrice.rawValue:updatedItem.dailyPrice,
