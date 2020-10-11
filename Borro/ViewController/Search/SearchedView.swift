@@ -52,7 +52,7 @@ struct SearchedView: View {
                 Spacer()
             }
             else{
-                Text("Loading...")
+                Text("*Search Index or None Found*")
                     .font(.subheadline)
                     .fontWeight(.light)
                     .foregroundColor(Color.black)

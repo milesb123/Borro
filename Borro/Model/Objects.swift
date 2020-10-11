@@ -53,14 +53,59 @@ struct Category{
     let category:String
 }
 
-struct Filter{
+class Filter:Hashable{
+                
+    static func == (lhs: Filter, rhs: Filter) -> Bool {
+        return type(of: lhs) == type(of: rhs)
+    }
     
+    func hash(into hasher: inout Hasher){
+        hasher.combine(0)
+    }
+    
+    func applyFilterForItems(items:[Item]) -> [Item]{
+        //Add Implementation
+        return []
+    }
+    
+}
+
+class CategoryFilter:Filter{
+    
+    let categories:Set<String>
+    
+    init(categories:[String]){
+        self.categories = Set(categories.map{$0})
+    }
+    
+    override func applyFilterForItems(items: [Item]) -> [Item] {
+        
+        var filteredItems:[Item] = []
+
+        for item in items{
+            let itemCategories:Set<String> = Set(item.categories.map{$0})
+            if(!categories.intersection(itemCategories).isEmpty){
+                print("categories in common: \(categories.intersection(itemCategories))")
+                filteredItems.append(item)
+            }
+        }
+        
+        return filteredItems
+    }
+    
+    override func hash(into hasher: inout Hasher){
+        hasher.combine(CategoryFilter.type.rawValue)
+    }
+    
+    enum CategoryFilter:String{
+        case type
+    }
 }
 
 struct Search{
     
     let text:String
-    let filters:[Filter]
+    let filters:Set<Filter>
     let category = "None"
     
 }

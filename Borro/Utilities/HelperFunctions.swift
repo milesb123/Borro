@@ -21,4 +21,21 @@ struct HelperFunctions{
         
         return newList
     }
+    
+    static func sortedCategoryList(categories:[String],search:String) -> [String]{
+        
+        var sortedCategories:[String] = []
+        
+        //Check for contains
+        
+        for category in categories.sorted(){
+            if(category.lowercased().contains(search.lowercased())){
+                sortedCategories.append(category)
+            }
+        }
+        
+        //Return Array of String
+        return !search.isEmpty ? (sortedCategories) : (categories)
+        
+    }
 }

@@ -10,6 +10,8 @@ import SwiftUI
 
 struct DropdownMenuTypable: View {
     
+    let list:[String]
+    
     @Binding var textField:String
     @State var expanded = false
     @State var listHeight:CGFloat = 1
@@ -40,7 +42,7 @@ struct DropdownMenuTypable: View {
                             }
                     }
                 }
-                Button(action:{self.onAdd()}){
+                Button(action:{self.collapse(bool: $expanded);self.onAdd()}){
                     Rectangle()
                         .frame(width:40,height:20)
                         .foregroundColor(Color("Teal"))
@@ -59,7 +61,7 @@ struct DropdownMenuTypable: View {
         return
         ScrollView{
             VStack(alignment: .leading){
-                ForEach((HelperFunctions.identifiableList(array: self.sortedCategoryList(categories: Categories.categories, search: self.textField))),id: \.1){ category in
+                ForEach((HelperFunctions.identifiableList(array: Categories.categories)),id: \.1){ category in
                         Button(action:{self.textField = category.0;self.collapse(bool: $expanded)}){
                         Text("\(category.0)")
                             .font(.subheadline)
@@ -88,20 +90,4 @@ struct DropdownMenuTypable: View {
         bool.wrappedValue = false
     }
     
-    func sortedCategoryList(categories:[String],search:String) -> [String]{
-        
-        var sortedCategories:[String] = []
-        
-        //Check for contains
-        
-        for category in categories.sorted(){
-            if(category.lowercased().contains(search.lowercased())){
-                sortedCategories.append(category)
-            }
-        }
-        
-        //Return Array of String
-        return !search.isEmpty ? (sortedCategories) : (categories)
-        
-    }
 }

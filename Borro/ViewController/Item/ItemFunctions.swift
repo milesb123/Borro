@@ -228,8 +228,7 @@ struct ItemFunctions: View {
                 .font(.headline)
                 .fontWeight(.bold)
                 .font(.subheadline)
-            DropdownMenuTypable(textField: $category, onAdd: self.addCategorytoList)
-                .animation(.easeInOut)
+            DropdownMenuTypable(list: Categories.categories, textField: $category, onAdd: self.addCategorytoList)
                 //Adds error message
             if (self.categoryValid != nil && self.categoryValid!.1 != nil && !self.categoryValid!.0){
                 Text(self.returnErrorMessage(error: self.categoryValid!.1!) ?? "")
@@ -439,7 +438,6 @@ struct ItemFunctions: View {
         case FieldType.category:
             //ORDER OF EXECUTION MATTERS
             //Categories can't be empty
-            //You cannot add a category that has already been selected
             //You cannot exceed more than 5 categories
             if(self.addedCategories.isEmpty){
                 self.categoryValid = (false,ErrorType.emptyField)
