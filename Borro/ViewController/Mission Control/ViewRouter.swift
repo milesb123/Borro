@@ -22,6 +22,8 @@ class ViewRouter:ObservableObject{
     
     @Published var currentTab = 0
     
+    let menuPublisher = SlidingMenu.MenuPublisher()
+    
     var lastTab = 0
 
     func setNewTab(view:Int){
@@ -33,11 +35,13 @@ class ViewRouter:ObservableObject{
     func presentAlert(alert:NativeAlert){
         self.alert = alert
         self.alertShown = true
+        self.menuPublisher.hideMenu()
     }
     
     func presentModal(modalContent:AnyView){
         self.modalContent = modalContent
         self.modalIsShown = true
+        self.menuPublisher.hideMenu()
     }
     func dismissModal(){
         self.modalIsShown = false

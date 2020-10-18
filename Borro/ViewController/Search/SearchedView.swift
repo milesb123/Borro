@@ -12,23 +12,31 @@ struct SearchedView: View {
     
     @Binding var searchField:String
     @Binding var results:[Item]?
+    @Binding var filters:Set<Filter>
     
     var body: some View {
         VStack(spacing:0){
             if(self.results != nil && !self.results!.isEmpty){
-                //Search Overview
-                HStack{
-                    VStack(alignment: .leading,spacing:5){
-                        Text("\(results!.count) Displayed")
-                            .font(.subheadline)
-                            .fontWeight(.light)
-                            .foregroundColor(Color("Teal"))
-                    }
-                    Spacer()
-                }
-                .padding(.vertical)
                 //Search List
                 ScrollView{
+                    //Search Overview
+                    HStack{
+                        VStack(alignment: .leading,spacing:5){
+                            Text("\(results!.count) Displayed")
+                                .font(.caption)
+                                .fontWeight(.light)
+                                .foregroundColor(Color("Teal"))
+                        }
+                        Spacer()
+                        if(!self.filters.isEmpty){
+                            Text("*Filters Applied*")
+                                .font(.caption)
+                                .fontWeight(.light)
+                                .foregroundColor(Color("Teal"))
+                        }
+                    }
+                    .padding(.vertical,10)
+                    
                     ForEach(results!, id: \.itemID){result in
                         NavigationLink(destination:
                             ResultDetail(item: result, isLocalUserItem: Session.shared.userServices.userIsLocal(userID: result.sellerID))
@@ -62,8 +70,6 @@ struct SearchedView: View {
             }
         }
         .padding(.horizontal)
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
     }
     
     private func resultNumberText(count:Int) -> Text{

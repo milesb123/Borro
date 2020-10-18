@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D1AF04F253CC849009290DE /* SlidingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1AF04E253CC849009290DE /* SlidingMenu.swift */; };
 		3D1CEE74252F791100D5D845 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1CEE73252F791100D5D845 /* HelperFunctions.swift */; };
 		3D1CEE7C253060FD00D5D845 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1CEE7B253060FD00D5D845 /* TestView.swift */; };
 		3D1CEE842533458300D5D845 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1CEE832533458200D5D845 /* Buttons.swift */; };
@@ -73,6 +74,7 @@
 		0786C53A86B09004FA643845 /* Pods_Borro_BorroUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Borro_BorroUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14CC5F0522947B6846EC674B /* Pods_Borro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Borro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A90214695AAC1578CF5F30A /* Pods_BorroTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BorroTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D1AF04E253CC849009290DE /* SlidingMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingMenu.swift; sourceTree = "<group>"; };
 		3D1CEE73252F791100D5D845 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		3D1CEE7B253060FD00D5D845 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		3D1CEE832533458200D5D845 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				3D1CEE7B253060FD00D5D845 /* TestView.swift */,
 				3D67A52C24FA9DEF0045C11F /* NavigationView.swift */,
 				3D24201424F440F10079D32A /* Images */,
+				3D1AF04E253CC849009290DE /* SlidingMenu.swift */,
 			);
 			path = "Under Construction";
 			sourceTree = "<group>";
@@ -618,6 +621,7 @@
 				3D60BBCD2525EF55003744B3 /* DropdownMenuTypable.swift in Sources */,
 				3D24201324F07B380079D32A /* StorageImage.swift in Sources */,
 				3D67A52D24FA9DEF0045C11F /* NavigationView.swift in Sources */,
+				3D1AF04F253CC849009290DE /* SlidingMenu.swift in Sources */,
 				3DABDE0E24EDA22B00394DC8 /* ImageTest.swift in Sources */,
 				3D64C45D24DDAA6F008D37FE /* AppDelegate.swift in Sources */,
 				3D1CEE74252F791100D5D845 /* HelperFunctions.swift in Sources */,

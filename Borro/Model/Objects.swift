@@ -48,11 +48,6 @@ class Item:ObservableObject{
     
 }
 
-
-struct Category{
-    let category:String
-}
-
 class Filter:Hashable{
                 
     static func == (lhs: Filter, rhs: Filter) -> Bool {

@@ -15,10 +15,15 @@ class SearchFunctions{
         var returnedItems:[Item] = []
         
         //Relevance
-        for item in items{
-            if(item.title.lowercased().contains(search.text.lowercased())){
-                returnedItems.append(item)
+        if(!search.text.isEmpty){
+            for item in items{
+                if(item.title.lowercased().contains(search.text.lowercased())){
+                    returnedItems.append(item)
+                }
             }
+        }
+        else{
+            returnedItems = items
         }
         
         //Filter

@@ -26,8 +26,8 @@ struct RootSearchView: View {
                         VStack{
                             Spacer()
                                 .frame(height:self.searchBarSpace)
-                            if(self.searchField.isEmpty){
-                                SearchHomeView()
+                            if(self.searchField.isEmpty && self.filters.isEmpty){
+                                SearchHomeView(searchField: $searchField, results: $results, filters: $filters, rootSearchView: self)
                                     .onAppear{
                                         self.searchBarSpace = UIScreen.main.bounds.height*0.15
                                         self.results = nil
@@ -35,9 +35,9 @@ struct RootSearchView: View {
                                     }
                             }
                             else{
-                                SearchedView(searchField: $searchField, results: $results)
+                                SearchedView(searchField: $searchField, results: $results, filters: $filters)
                                     .onAppear{
-                                        self.searchBarSpace = UIScreen.main.bounds.height*0.2
+                                        self.searchBarSpace = UIScreen.main.bounds.height*0.225
                                     }
                             }
                         }
@@ -59,9 +59,21 @@ struct RootSearchView: View {
         return
         VStack{
             Spacer()
+            if(!self.searchField.isEmpty || !self.filters.isEmpty){
+                Button(action:{self.searchField.removeAll();self.filters.removeAll()}){
+                    HStack{
+                        Image(systemName: "arrow.left")
+                        Text("Home")
+                            .font(.caption)
+                            .fontWeight(.light)
+                        Spacer()
+                    }
+                    .foregroundColor(Color("Teal"))
+                }
+            }
             HStack{
                 TextField("Search Here", text: $searchField,onCommit: {
-                    self.didCommitSearch(searchSubmission: SearchSubmission(text: self.searchField, filters: self.filters))
+                    self.didCommitSearch(searchSubmission: SearchSubmission(text: self.searchField, filters: self.filters), completion: {})
                 })
                     .font(.subheadline)
                 Image(systemName: "magnifyingglass")
@@ -72,8 +84,8 @@ struct RootSearchView: View {
             Rectangle()
                 .frame(height:1)
                 .padding(.vertical,5)
-            HStack{
-                if(!self.searchField.isEmpty){
+            if(!self.searchField.isEmpty || !self.filters.isEmpty){
+                HStack{
                     self.searchTrayButton(text: "Filters", action: {self.presentFilterPicker()})
                     self.searchTrayButton(text: "Sort By", action: {})
                 }
@@ -94,16 +106,19 @@ struct RootSearchView: View {
             }
     }
     
-    private func didCommitSearch(searchSubmission:SearchSubmission){
+    func didCommitSearch(searchSubmission:SearchSubmission, completion: @escaping ()->Void ) -> Void{
         
-        //Replace with a function that filters by category from the server
+        //Replace with get Items by search
         
         Session.shared.itemServices.getAllItems { optionalItems,err in
             if let err = err{
                 print(err)
             }
             if let rawItems = optionalItems{
+                completion()
                 self.results = SearchFunctions.filterItemsBySearch(search: Search(text: searchSubmission.text, filters: searchSubmission.filters), items: rawItems)
+                self.filters = searchSubmission.filters
+
             }
         }
     }
@@ -129,12 +144,12 @@ struct RootSearchView: View {
         if let results = self.results{
             print(self.filters)
             print(self.results)
-            self.didCommitSearch(searchSubmission: SearchSubmission(text: self.searchField, filters: self.filters))
+            self.didCommitSearch(searchSubmission: SearchSubmission(text: self.searchField, filters: self.filters), completion: {})
             print(self.results)
         }
     }
     
-    private struct SearchSubmission{
+    struct SearchSubmission{
         
         let text:String
         let filters:Set<Filter>

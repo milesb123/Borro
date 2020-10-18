@@ -10,11 +10,18 @@ import SwiftUI
 
 struct SearchHomeView:View{
     
+    @Binding var searchField:String
+    @Binding var results:[Item]?
+    @Binding var filters:Set<Filter>
+    
+    let rootSearchView:RootSearchView
+    
     var body: some View {
         GeometryReader{ geo in
             ScrollView{
                 VStack(spacing:0){
                     promotionHeader()
+                    
                     VStack{
                         HStack{
                             Text("Top Categories")
@@ -24,16 +31,16 @@ struct SearchHomeView:View{
                             Spacer()
                         }
                         HStack{
-                            categoryView()
-                            categoryView()
+                            categoryView(category: "Sporting Goods")
+                            categoryView(category: "Apparel and Accessories")
                         }
                         HStack{
-                            categoryView()
-                            categoryView()
+                            categoryView(category: "Electronics")
+                            categoryView(category: "Health and Beauty")
                         }
                     }
                     .padding()
-                    .foregroundColor(Color("lightGray"))
+
                     Button(action:{}){
                         Text("See All Categories")
                             .font(.subheadline)
@@ -65,12 +72,17 @@ struct SearchHomeView:View{
         }
     }
     
-    private func categoryView() -> some View{
+    private func categoryView(category:String) -> some View{
         return
-        Button(action:{}){
+            Button(action:{
+                //Search items by category
+                let filters:Set<Filter> = [CategoryFilter(categories: [category])]
+                rootSearchView.didCommitSearch(searchSubmission: RootSearchView.SearchSubmission(text: self.searchField, filters: filters), completion: {})
+            }){
             Rectangle()
                 .frame(height:100)
-        }
+                .overlay(Text(category).fontWeight(.light).foregroundColor(.black))
+        }        
     }
     
     private func resultPreview() -> some View{

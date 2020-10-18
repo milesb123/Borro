@@ -17,7 +17,7 @@ struct ProfileView: View {
     
     @State var user:User
     @State var items:[Item] = []
-    
+        
     var body: some View{
         VStack{
             if(user != nil){
@@ -34,7 +34,7 @@ struct ProfileView: View {
                     .background(ZStack{VStack{Spacer();Color.white.shadow(radius: 2).frame(height:1)};Color.white})
                     .overlay(
                         HStack{
-                            Button(action:{}){
+                            Button(action:{self.viewRouter.menuPublisher.presentMenu()}){
                             Spacer()
                             Image(systemName:"gear")
                                 .resizable()

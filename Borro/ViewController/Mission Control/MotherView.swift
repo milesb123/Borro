@@ -19,6 +19,7 @@ struct MotherView: View {
         GeometryReader { geometry in
             ZStack{
                 VStack(spacing:0){
+                    
                     if(self.localUser != nil){
                         VStack(spacing:0){
                             //Content
@@ -56,6 +57,9 @@ struct MotherView: View {
                 //Modal
                 Modal()
                 
+                //Menu
+                SlidingMenu(publisher: viewRouter.menuPublisher, view: AnyView(VStack{HStack{Spacer()};Spacer()}))
+                
                 //Alert
                 if(self.viewRouter.alertShown){
                     self.viewRouter.alert
@@ -64,6 +68,7 @@ struct MotherView: View {
                     }
                 }
             }
+            .edgesIgnoringSafeArea(.vertical)
             .onReceive(self.viewRouter.$currentTab, perform: { tab in
                 if(tab == 0){
                     self.currentContainerView = AnyView(self.rootSearchView())
