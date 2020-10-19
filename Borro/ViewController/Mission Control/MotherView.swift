@@ -59,16 +59,11 @@ struct MotherView: View {
                 
                 //Menu
                 SlidingMenu(publisher: viewRouter.menuPublisher, view: AnyView(VStack{HStack{Spacer()};Spacer()}))
+                    .edgesIgnoringSafeArea(.top)
                 
                 //Alert
-                if(self.viewRouter.alertShown){
-                    self.viewRouter.alert
-                    onAppear{
-                        print("Alert appeared")
-                    }
-                }
+                AlertView()
             }
-            .edgesIgnoringSafeArea(.vertical)
             .onReceive(self.viewRouter.$currentTab, perform: { tab in
                 if(tab == 0){
                     self.currentContainerView = AnyView(self.rootSearchView())

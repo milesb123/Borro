@@ -530,7 +530,7 @@ struct ItemFunctions: View {
                 //Updates item within Firebase
                 Session.shared.itemServices.updateItem(updatedItem: updatedItem) { (err) in
                     if let err = err{
-                        self.viewRouter.presentAlert(alert: NativeAlert(alert: "Something Went Wrong", message: "Check your connection and try again", tip: nil, option1: ("Okay",nil), option2: nil))
+                        self.viewRouter.presentAlert(alert: NativeAlert(alert: "Something Went Wrong", message: "Check your connection and try again", tip: nil, warning: nil, option1: ("Okay",nil), option2: nil))
                         print(err)
                     }
                     else{

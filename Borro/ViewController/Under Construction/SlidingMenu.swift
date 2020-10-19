@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SlidingMenu: View {
     
-    let publisher:MenuPublisher
+    let publisher:BooleanPublisher
     
     @State var size: CGFloat = -UIScreen.main.bounds.width
     
@@ -78,25 +78,10 @@ struct SlidingMenu: View {
 
     }
     
-    class MenuPublisher{
-        
-        @Published var present:Bool = false
-        
-        
-        func presentMenu(){
-            self.present = true
-        }
-        
-        func hideMenu(){
-            self.present = false
-        }
-        
-    }
-    
 }
 
 struct swipe : View{
-    let x = SlidingMenu.MenuPublisher()
+    let x = BooleanPublisher()
     
     var body : some View{
         ZStack{

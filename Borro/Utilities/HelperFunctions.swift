@@ -39,3 +39,18 @@ struct HelperFunctions{
         
     }
 }
+
+class BooleanPublisher{
+    
+    @Published var present:Bool = false
+    
+    
+    func presentMenu(){
+        self.present = true
+    }
+    
+    func hideMenu(){
+        self.present = false
+    }
+    
+}

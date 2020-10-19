@@ -12,7 +12,7 @@ import SwiftUI
 class ViewRouter:ObservableObject{
     
     @Published var alertShown = false
-    @Published var alert:NativeAlert?
+    @Published var alertContent:NativeAlert?
     
     @Published var popUpShown = false
     @Published var popUp = Text("")
@@ -22,7 +22,7 @@ class ViewRouter:ObservableObject{
     
     @Published var currentTab = 0
     
-    let menuPublisher = SlidingMenu.MenuPublisher()
+    let menuPublisher = BooleanPublisher()
     
     var lastTab = 0
 
@@ -33,7 +33,7 @@ class ViewRouter:ObservableObject{
     }
     
     func presentAlert(alert:NativeAlert){
-        self.alert = alert
+        self.alertContent = alert
         self.alertShown = true
         self.menuPublisher.hideMenu()
     }

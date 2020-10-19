@@ -148,7 +148,7 @@ struct EditProfile: View {
                 path = "\(user.userID)/profile_images/\(Date().timeIntervalSinceReferenceDate)"
                 Session.shared.uploadImage(path: path, data: data) { (metadata, err) in
                     if let err = err{
-                        self.viewRouter.presentAlert(alert: NativeAlert(alert:  "Something Went Wrong", message: "Check your connection and try again", tip: nil, option1: ("Okay",nil), option2: nil))
+                        self.viewRouter.presentAlert(alert: NativeAlert(alert:  "Something Went Wrong", message: "Check your connection and try again", tip: nil, warning: nil, option1: ("Okay",nil), option2: nil))
                         print(err)
                     }
                     else{
@@ -168,7 +168,7 @@ struct EditProfile: View {
     func submitUser(sub:UserSubmission){
         Session.shared.userServices.updateUser(userSub: sub) { (err) in
             if let err = err {
-                self.viewRouter.presentAlert(alert: NativeAlert(alert:  "Something Went Wrong", message: "Check your connection and try again", tip: nil, option1: ("Okay",nil), option2: nil))
+                self.viewRouter.presentAlert(alert: NativeAlert(alert:  "Something Went Wrong", message: "Check your connection and try again", tip: nil, warning: nil, option1: ("Okay",nil), option2: nil))
                 print(err)
             }
             else{

@@ -297,7 +297,7 @@ struct CreateUser: View {
     }
     
     func setAlert(title:String = "Alert",message:String = "message",buttonText:String = "Okay"){
-        self.viewRouter.presentAlert(alert: NativeAlert(alert: title, message: message, tip: nil, option1: (buttonText,nil), option2: nil))
+        self.viewRouter.presentAlert(alert: NativeAlert(alert: title, message: message, tip: nil, warning: nil, option1: (buttonText,nil), option2: nil))
     }
     
     func dismissModal(){

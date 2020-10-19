@@ -8,6 +8,27 @@
 
 import SwiftUI
 
+struct AlertView:View{
+    
+    @EnvironmentObject var viewRouter:ViewRouter
+    
+    var body: some View{
+        GeometryReader{ geometry in
+            VStack{
+                if(self.viewRouter.alertShown && (self.viewRouter.alertContent != nil)){
+                    Spacer()
+                    HStack{
+                        Spacer()
+                        self.viewRouter.alertContent!
+                        Spacer()
+                    }
+                    Spacer()
+                }
+            }
+        }
+    }
+}
+
 struct NativeAlert: View {
     
     @EnvironmentObject var viewRouter:ViewRouter
@@ -17,6 +38,8 @@ struct NativeAlert: View {
     let message:String
     
     let tip:String?
+    
+    let warning:String?
     
     let option1:(String,(()->Void)?)
     
@@ -36,11 +59,19 @@ struct NativeAlert: View {
                     Text(self.message)
                         .font(.subheadline)
                         .fontWeight(.light)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .multilineTextAlignment(.center)
                     if(self.tip != nil){
                         Text("Tip: \(tip!)")
-                            .font(.subheadline)
+                            .font(.caption)
                             .fontWeight(.light)
                             .foregroundColor(Color("Teal"))
+                    }
+                    if(self.warning != nil){
+                        Text("Warning: \(warning!)")
+                            .font(.caption)
+                            .fontWeight(.light)
+                            .foregroundColor(Color.red)
                     }
                 }
                 .padding(.bottom)
@@ -54,7 +85,7 @@ struct NativeAlert: View {
             }
             .padding()
         }
-        .frame(width:300,height:180)
+        .frame(maxWidth:300,maxHeight:200)
             
     }
     

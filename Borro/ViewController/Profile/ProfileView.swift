@@ -60,6 +60,7 @@ struct ProfileView: View {
                             }
                             Spacer()
                         }
+                        .padding(.horizontal,20)
                     }
                     else if(currentView == 2){
                         VStack{
@@ -71,6 +72,7 @@ struct ProfileView: View {
                             }
                             Spacer()
                         }
+                        .padding(.horizontal,20)
                     }
                     else if(currentView == 2){
                         VStack{
@@ -82,9 +84,10 @@ struct ProfileView: View {
                             }
                             Spacer()
                         }
+                        .padding(.horizontal,20)
                     }
                 }
-                .padding(.horizontal)
+                //.padding(.horizontal)
             }
             .onAppear{
                 self.loadItems()
@@ -237,15 +240,18 @@ struct ProfileView: View {
                             }
                         }
                     }
-                    
-                    
+                }
+                .padding(.horizontal,20)
+                
+                VStack(spacing:10){
                     ForEach(items, id: \.itemID){result in
-                        self.itemPreviewBar(item:result)
+                        ItemRow(item: result, isLocalUser: $isLocalUser, loadItems: self.loadItems, deleteItem: self.deleteItem)
                     }
-                    
-                    Spacer()
                 }
                 .padding(.top)
+                
+                Spacer()
+                
             }
         }
         
@@ -293,6 +299,167 @@ struct ProfileView: View {
         func editProfileTapped(){
             self.viewRouter.dismissModal()
             self.viewRouter.presentModal(modalContent: AnyView(EditProfile(user: $user)))
+        }
+        
+        func deleteItem(item:Item) -> Void{
+            Session.shared.itemServices.deleteItem(itemID: item.itemID) { (err) in
+                if let err = err{
+                    print(err)
+                }
+            }
+        }
+    }
+    
+    struct ItemRow:View{
+        
+        @EnvironmentObject var viewRouter:ViewRouter
+        
+        let barHeight:CGFloat = 80
+        
+        let iconWidth:CGFloat = 25
+        let horizontalPadding:CGFloat = 20
+        
+        let item:Item
+        
+        @Binding var isLocalUser:Bool
+        
+        @State var size: CGFloat = 0
+        
+        //delete shown -> hPadding  + iWidth + hPadding
+        let presentedOffset:CGFloat = -(20+25+20)
+        //delete hidden
+        let hiddenOffset:CGFloat = 0
+        let sufficientGesture:CGFloat = 50
+        
+        let loadItems:()->Void
+        let deleteItem:(Item)->Void
+
+        var body: some View{
+            ZStack{
+                bottom()
+                top()
+                .offset(x:size)
+                .highPriorityGesture(DragGesture().onChanged({(value) in
+                    //moved right if menu is not already expanded
+                    if value.translation.width > 0 && !(self.size>=presentedOffset){
+                        self.size = value.translation.width
+                    }
+                    //moved left
+                    else if value.translation.width<0{
+                        self.size = hiddenOffset + value.translation.width
+                    }
+                })
+                .onEnded({ (value) in
+                    
+                    //moved right
+                    if value.translation.width > 0{
+                        //Sufficient gesture
+                        if value.translation.width > sufficientGesture{
+                            //trigger alert
+                            //Can Present
+                            self.size = hiddenOffset
+                        }
+                        //Insufficient Gesture
+                        else{
+                            //Remain in Position
+                            self.size = presentedOffset
+                        }
+                    }
+                    //moved left
+                    else{
+                        //Sufficient gesture
+                        if -value.translation.width > sufficientGesture{
+                            //Can Show Delete
+                            self.size = presentedOffset
+                            self.deletePresented()
+
+                        }
+                        //Insufficient Gesture
+                        else{
+                            //Remain in Position
+                            self.size = hiddenOffset
+                        }
+                    }
+                    
+                })).animation(.spring())
+                
+            }
+            
+            .frame(height:barHeight)
+        }
+        func bottom() -> some View{
+                        
+            return
+            
+            HStack{
+                VStack{
+                    Spacer()
+                }
+                Spacer()
+                Image(systemName: "trash.fill")
+                    .resizable()
+                    .frame(width:iconWidth,height:iconWidth)
+                    .foregroundColor(Color.white)
+                    .padding(.horizontal,horizontalPadding)
+            }
+            .background(Color("Teal"))
+        }
+        
+        func top() -> some View{
+            
+            return
+            NavigationLink(destination: ResultDetail(item: item, isLocalUserItem: isLocalUser)){
+                HStack(spacing: 20){
+                    //padded layer
+                    HStack{
+                        if(false){
+                            StorageImage(fullPath: item.images[0], cornerRadius: 0, width: 60, height: 60)
+                        }
+                        else{
+                            Rectangle()
+                                .foregroundColor(Color("lightGray"))
+                                .frame(width:60,height:60)
+                        }
+                        
+                        VStack(alignment: .leading){
+                            Group{
+                                Text("\(item.title)")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                Text("\(item.categories[0])")
+                                    .font(.subheadline)
+                                    .fontWeight(.light)
+                            }
+                            .font(.body)
+                            .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
+                        }
+                        
+                        Spacer()
+                        if(self.size > presentedOffset/2){
+                            Image(systemName: "trash.fill")
+                                .resizable()
+                                .frame(width:iconWidth,height:iconWidth)
+                                .foregroundColor(Color("lightGray"))
+                                .animation(.linear)
+                        }
+                    }
+                    .padding(.horizontal,horizontalPadding)
+                    .padding(.vertical,10)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .background(Color.white)
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+        
+        func deletePresented(){
+            self.viewRouter.presentAlert(alert: NativeAlert(alert: "Delete Item", message: "Are you sure you want to delete this item?", tip: nil, warning: "This cannot be undone", option1: ("Yes",{self.deleteItem(item);self.hideSlider();self.loadItems()}), option2: ("No",{self.hideSlider()})))
+            //self.hideSlider()
+        }
+        
+        func hideSlider()->Void{
+            self.size = self.hiddenOffset
         }
     }
     
@@ -361,6 +528,7 @@ struct RootProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(isLocalUser: true, user: DummyData.users[1])
+        ProfileView(isLocalUser: true, user: DummyData.users[0])
+        //ProfileView.ItemRow(item: DummyData.items[0], isLocalUser: true)
     }
 }
